@@ -34,3 +34,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+localhost.crt
+localhost.key
+
+certificates
+/.env
+/prisma/migrations/
