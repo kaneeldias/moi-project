@@ -2,6 +2,10 @@ import React from "react";
 
 export default async function TableSkeleton() {
     return (
+        <div>
+            <input type="text"
+                   className="w-48 border-2 border-gray-200 p-2 m-3 text-xs rounded-sm hover:border-blue-200 focus:border-blue-700 transition-all outline-none"
+                   placeholder="Search..."/>
             <table className="w-full min-w-max table-auto text-left">
                 <thead>
                 <tr>
@@ -16,6 +20,8 @@ export default async function TableSkeleton() {
                 <TableRowSkeleton/>
                 </tbody>
             </table>
+
+        </div>
     );
 }
 

@@ -1,10 +1,9 @@
-import React, {Suspense} from "react";
+import React from "react";
+import OpportunityContent from "@/app/opportunities/[id]/content";
 import OpportunityBox from "@/components/OpportunityBox";
-import OpportunityBoxSkeleton from "@/components/OpportunityBoxSkeleton";
-import SurveyResponsesTable from "@/components/tables/SurveyResponsesTable";
+import {cookies} from "next/headers";
 import OpportunityAnalysisTable from "@/components/tables/OpportunityAnalysisTable";
-import SurveyResponsesTableSkeleton from "@/components/tables/SurveyResponsesTableSkeleton";
-import OpportunityAnalysisTableSkeleton from "@/components/tables/OpportunityAnalysisTableSkeleton";
+import SurveyResponsesTable from "@/components/tables/SurveyResponsesTable";
 
 type Props = {
     params: {
@@ -12,28 +11,20 @@ type Props = {
     }
 }
 
-export default async function Opportunity(prop: Props) {
+export default function Opportunity(prop: Props) {
+    const accessToken = cookies().get("access_token")!.value;
     const opportunityId = parseInt(prop.params.id);
+    const opportunityBox = <OpportunityBox opportunityId={opportunityId}/>
+    const surveyResponsesTable = <SurveyResponsesTable opportunityId={opportunityId}/>
+    const opportunityAnalysisTable = <OpportunityAnalysisTable opportunityId={opportunityId}/>
 
     return (
-        <div className={`flex flex-col w-full items-center`}>
-
-            <div className={`flex flex-col space-y-5`}>
-
-                <Suspense fallback={<OpportunityBoxSkeleton/>}>
-                    <OpportunityBox opportunityId={opportunityId}/>
-                </Suspense>
-
-                <Suspense fallback={<SurveyResponsesTableSkeleton/>}>
-                    <SurveyResponsesTable opportunityId={opportunityId}/>
-                </Suspense>
-
-                <Suspense fallback={<OpportunityAnalysisTableSkeleton/>}>
-                    <OpportunityAnalysisTable opportunityId={opportunityId}/>
-                </Suspense>
-
-            </div>
-        </div>
+        <OpportunityContent opportunityId={opportunityId}
+                            opportunityBox={opportunityBox}
+                            surveyResponsesTable={surveyResponsesTable}
+                            opportunityAnalysisTable={opportunityAnalysisTable}
+                            accessToken={accessToken}
+        />
     );
 
 }

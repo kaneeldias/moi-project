@@ -1,11 +1,6 @@
-import {getApplicationOwner} from "@/utils/application-utils";
 import React from "react";
 
-type Props = {
-    applicationId: number;
-}
-
-export default async function ApplicationOwnerChipSkeleton() {
+export default function ApplicationOwnerChipSkeleton() {
     return (
         <div className={"flex flex-row animate-pulse space-x-1 items-center"}>
             <div className={`h-[20px] w-[20px] bg-gray-400 rounded-full dark:bg-gray-700`}></div>

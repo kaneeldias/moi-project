@@ -4,6 +4,10 @@ export function formatDateToMonthYear(date: Date, locale: string = 'default'): s
 }
 
 //convert date to YYYY-MM-DD hh:mm:ss
-export function formatDateToDateTime(date: Date): string {
+export function formatDateToDateTime(date: Date | string): string {
+    if (typeof date === 'string') {
+        date = new Date(date);
+    }
+
     return date.toISOString().split('T')[0] + ' ' + date.toTimeString().split(' ')[0];
 }

@@ -10,7 +10,6 @@ type Props = {
 
 export default async function OpportunityBox(props: Props) {
     await waitRandomTime();
-
     const opportunity = await getOpportunity(props.opportunityId);
 
     return (

@@ -30,7 +30,6 @@ type Props = {
 
 export default async function OpportunityAnalysisTable(props: Props) {
     await waitRandomTime();
-
     const analysis = await getOpportunityAnalysis(props.opportunityId);
 
     const rows = analysis.map((analysisRow) => {
@@ -50,7 +49,7 @@ export default async function OpportunityAnalysisTable(props: Props) {
     return (
         <div className={`p-1 rounded-md bg-white h-fit w-full md:w-[800px] shadow-md`}>
 
-            <CardTitle title={`Responses Analysis`} color={`green`}/>
+            <CardTitle title={`Responses Analysis`} color={`blue`}/>
             <Table columns={COLUMNS} rows={rows}/>
 
         </div>
@@ -65,7 +64,7 @@ function getScorecard(count: number, score: number) {
 
     return (
         <div className={`flex flex-row space-x-2`}>
-            <div className={`font-bold w-6`}>{score.toFixed(2)}</div>
+            <div className={`font-bold w-8`}>{score.toFixed(2)}</div>
             <div className={`w-4 font-light`}>({count})</div>
         </div>
     )
