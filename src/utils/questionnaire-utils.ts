@@ -63,3 +63,46 @@ export async function getFullSurveyResponses(opportunityId: number): Promise<{
     return surveyResponses!;
 }
 
+export async function getFullSurveyResponsesForProject(projectId: number): Promise<{
+    initialCount: number;
+    finalCount: number;
+    answers: {
+        questionId: number;
+        type: QuestionType;
+        answer: number;
+    }[]
+}[]> {
+    const opportunity = await prisma.project.findUnique({
+        where: {
+            id: projectId
+        },
+        select: {
+            opportunities: {
+                select: {
+                    slots: {
+                        select: {
+                            surveyResponses: {
+                                select: {
+                                    initialCount: true,
+                                    finalCount: true,
+                                    answers: {
+                                        select: {
+                                            questionId: true,
+                                            type: true,
+                                            answer: true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    const surveyResponses = opportunity?.opportunities.map(opportunity => opportunity.slots).flat().map(slot => slot.surveyResponses).flat();
+    return surveyResponses!;
+}
+
+

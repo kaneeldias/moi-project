@@ -56,6 +56,87 @@ export async function getSurveyResponses(opportunityId: number) {
    return surveyResponses;
 }
 
+export async function getSurveyResponsesForProject(projectId: number): Promise<{
+    applicationId: number,
+    opportunity: {
+        id: number,
+        name: string,
+        project: {
+            sdg: number
+        }
+    }
+    slot: {
+        name: string
+    },
+    updatedAt: Date
+}[]> {
+    const project = await prisma.project.findUnique({
+        where: {
+            id: projectId
+        },
+        select: {
+            sdg: true,
+            opportunities: {
+                select: {
+                    id: true,
+                    name: true,
+                    slots: {
+                        select: {
+                            id: true,
+                            name: true,
+                            surveyResponses: {
+                                select: {
+                                    applicationId: true,
+                                    updatedAt: true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    const surveyResponses: {
+        applicationId: number,
+        opportunity: {
+            id: number,
+            name: string,
+            project: {
+                sdg: number
+            }
+        },
+        slot: {
+            name: string
+        },
+        updatedAt: Date
+    }[] = [];
+
+    project?.opportunities.forEach(opportunity => {
+        opportunity.slots.forEach(slot => {
+            slot.surveyResponses.forEach(surveyResponse => {
+                surveyResponses.push({
+                    applicationId: surveyResponse.applicationId,
+                    opportunity: {
+                        id: opportunity.id,
+                        name: opportunity.name,
+                        project: {
+                            sdg: project.sdg
+                        }
+                    },
+                    slot: {
+                        name: slot.name
+                    },
+                    updatedAt: surveyResponse.updatedAt
+                });
+            });
+        });
+    });
+
+    return surveyResponses;
+}
+
+
 export async function getOpportunity(opportunityId: number): Promise<Opportunity> {
     const query = gql`
         {
@@ -200,6 +281,62 @@ export async function getOpportunities() {
 
     return result;
 }
+
+export async function getOpportunitiesOfProject(projectId: number) {
+    const opportunities = await prisma.opportunity.findMany({
+        where: {
+            projectId: projectId
+        },
+        select: {
+            id: true,
+            name: true,
+            project: {
+                select: {
+                    id: true,
+                    sdg: true
+                }
+            },
+            slots: {
+                select: {
+                    surveyResponses: {
+                        select: {
+                            applicationId: true
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    const result: {
+        id: number,
+        name: string,
+        project: {
+            id: number,
+            sdg: number
+        }
+        responsesCount: number
+    }[] = [];
+
+    for (const opportunity of opportunities) {
+        const responsesCount = opportunity.slots.reduce((acc, slot) => {
+            return acc + slot.surveyResponses.length;
+        }, 0);
+
+        result.push({
+            id: opportunity.id,
+            name: opportunity.name,
+            project: {
+                id: opportunity.project.id,
+                sdg: opportunity.project.sdg
+            },
+            responsesCount: responsesCount
+        });
+    }
+
+    return result;
+}
+
 
 export async function getHostEntity(opportunityId: number) {
     const query = gql`

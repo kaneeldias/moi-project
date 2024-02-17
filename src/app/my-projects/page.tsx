@@ -1,5 +1,5 @@
 import Heading from "@/components/Heading";
-import ProjectBox from "@/components/ProjectBox";
+import SlotBox from "@/components/SlotBox";
 import { gql } from "@apollo/client";
 import {runQuery} from "@/utils/graphql-utils";
 import {mapProject} from "@/mappers/project-mappers";
@@ -14,7 +14,7 @@ export default async function ProjectSelector() {
             { projects.length > 0 ? <>
                 <Heading>Select your project</Heading>
                 <div className={`flex flex-col space-y-5 w-full`}>
-                    { projects.map((project) => <div key={`${project.id}`}><ProjectBox project={project}/></div> )}
+                    { projects.map((project) => <div key={`${project.id}`}><SlotBox project={project}/></div> )}
                 </div>
             </> :
                 <div className={`flex flex-col space-y-2`}>

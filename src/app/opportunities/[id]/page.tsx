@@ -12,7 +12,6 @@ type Props = {
 }
 
 export default function Opportunity(prop: Props) {
-    const accessToken = cookies().get("access_token")!.value;
     const opportunityId = parseInt(prop.params.id);
     const opportunityBox = <OpportunityBox opportunityId={opportunityId}/>
     const surveyResponsesTable = <SurveyResponsesTable opportunityId={opportunityId}/>
@@ -23,7 +22,6 @@ export default function Opportunity(prop: Props) {
                             opportunityBox={opportunityBox}
                             surveyResponsesTable={surveyResponsesTable}
                             opportunityAnalysisTable={opportunityAnalysisTable}
-                            accessToken={accessToken}
         />
     );
 

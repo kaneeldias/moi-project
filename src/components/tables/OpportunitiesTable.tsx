@@ -1,5 +1,5 @@
 import Link from "next/link";
-import {getLocation, getOpportunities, getSurveyResponses} from "@/utils/opportunity-utils";
+import {getLocation, getOpportunities, getOpportunitiesOfProject, getSurveyResponses} from "@/utils/opportunity-utils";
 import React, {Suspense} from "react";
 import Table from "@/components/tables/Table";
 import {waitRandomTime} from "@/utils/test-utils";
@@ -14,7 +14,7 @@ const COLUMNS = [
         name: "ID"
     },
     {
-        name: "Project"
+        name: "Opportunity"
     },
     {
         name: "Host"
@@ -27,10 +27,17 @@ const COLUMNS = [
     }
 ]
 
-export default async function OpportunitiesTable() {
+type Props = {
+    projectId?: number
+}
+
+export default async function OpportunitiesTable(props: Props) {
     await waitRandomTime();
 
-    const opportunities = await getOpportunities();
+    let opportunities;
+    if (props.projectId) opportunities = await getOpportunitiesOfProject(props.projectId);
+    else opportunities = await getOpportunities();
+
     const rows = opportunities.map((opportunity) => {
         return [
                 <Link href={`/opportunities/${opportunity.id}`}>
@@ -39,9 +46,9 @@ export default async function OpportunitiesTable() {
                     </div>
                 </Link>,
 
-        <OpportunityChip id={opportunity.id} name={opportunity.name} sdg={opportunity.project.sdg}/>,
+            <OpportunityChip id={opportunity.id} name={opportunity.name} sdg={opportunity.project.sdg}/>,
 
-        <Suspense fallback={<HostEntityChipSkeleton/>}>
+            <Suspense fallback={<HostEntityChipSkeleton/>}>
                 <HostEntityChip opportunityId={opportunity.id}/>
             </Suspense>,
 
