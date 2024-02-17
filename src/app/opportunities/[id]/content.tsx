@@ -4,8 +4,7 @@ import React, {ReactNode, Suspense, useState} from "react";
 import OpportunityBoxSkeleton from "@/components/OpportunityBoxSkeleton";
 import SurveyResponsesTableSkeleton from "@/components/tables/SurveyResponsesTableSkeleton";
 import OpportunityAnalysisTableSkeleton from "@/components/tables/OpportunityAnalysisTableSkeleton";
-import SurveyResponsesTable from "@/components/tables/SurveyResponsesTable";
-import OpportunityAnalysisTable from "@/components/tables/OpportunityAnalysisTable";
+import {MenuSelector} from "@/components/MenuSelector";
 
 type Props = {
     opportunityId: number;
@@ -16,7 +15,7 @@ type Props = {
 }
 
 export default function OpportunityContent(props: Props) {
-    const [activePage, setActivePage] = useState("responses");
+    const [activePage, setActivePage] = useState("Survey analysis");
 
     return (
         <div className={`flex flex-col w-full items-center`}>
@@ -29,19 +28,19 @@ export default function OpportunityContent(props: Props) {
                     </Suspense>
 
                     <div className={`flex flex-col space-y-2`}>
-                        <div className={`w-full p-3 font-bold ${activePage == "responses" ? "bg-blue-700 text-white border-blue-500" : "bg-white border-gray-300"} border-2 hover:bg-blue-700 hover:text-white transition-all rounded-md cursor-pointer`} onClick={() => setActivePage("responses")}>Survey responses</div>
-                        <div className={`w-full p-3 font-bold ${activePage == "analysis" ? "bg-blue-700 text-white border-blue-500" : "bg-white border-gray-300"} border-2 hover:bg-blue-700 hover:text-white transition-all rounded-md cursor-pointer`} onClick={() => setActivePage("analysis")}>Survey analysis</div>
+                        <MenuSelector setActivePage={setActivePage} currentActivePage={activePage} name={"Survey analysis"}/>
+                        <MenuSelector setActivePage={setActivePage} currentActivePage={activePage} name={"Survey responses"}/>
                     </div>
                 </div>
 
                 <div>
-                    {activePage === "responses" &&
+                    {activePage === "Survey responses" &&
                         <Suspense fallback={<SurveyResponsesTableSkeleton/>}>
                             {props.surveyResponsesTable}
                         </Suspense>
                     }
 
-                    { activePage === "analysis" &&
+                    { activePage === "Survey analysis" &&
                         <Suspense fallback={<OpportunityAnalysisTableSkeleton/>}>
                             {props.opportunityAnalysisTable}
                         </Suspense>

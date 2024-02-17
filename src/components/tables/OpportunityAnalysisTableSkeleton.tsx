@@ -6,7 +6,7 @@ export default function OpportunityAnalysisTableSkeleton() {
     return (
         <div className={`p-1 rounded-md bg-white h-fit w-full md:w-[800px] shadow-md`}>
 
-            <CardTitle title={`Responses Analysis`} color={`green`}/>
+            <CardTitle title={`Responses Analysis`} color={`blue`}/>
             <TableSkeleton/>
         </div>
 
