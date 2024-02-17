@@ -39,7 +39,7 @@ export default function Table(props: Props) {
     }
 
     return (
-        <div className={`transition-all`}>
+        <div className={`transition-all overflow-x-scroll md:overflow-x-hidden`}>
             <input name="search" type="text" className="w-48 border-2 border-gray-200 p-2 m-3 text-xs rounded-sm hover:border-blue-200 focus:border-blue-700 transition-all outline-none" placeholder="Search..." value={search} onChange={handleSearch}/>
 
             { displayedRows.length === 0 &&
@@ -49,7 +49,7 @@ export default function Table(props: Props) {
             }
 
             { displayedRows.length > 0 &&
-                <table className="w-full min-w-max table-auto text-left">
+                <table className="w-full min-w-full md:min-w-max table-auto text-left">
                 <thead>
                 <tr>
                     {headers.map((head) => (

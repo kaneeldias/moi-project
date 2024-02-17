@@ -20,14 +20,14 @@ export default function OpportunityContent(props: Props) {
     return (
         <div className={`flex flex-col w-full items-center`}>
 
-            <div className={`flex flex-row space-y-5 md:space-y-5 md:space-x-5`}>
+            <div className={`flex flex-col md:flex-row space-y-5 md:space-y-5 md:space-x-5`}>
 
                 <div className={`flex flex-col space-y-10`}>
                     <Suspense fallback={<OpportunityBoxSkeleton/>}>
                         {props.opportunityBox}
                     </Suspense>
 
-                    <div className={`flex flex-col space-y-2`}>
+                    <div className={`flex flex-row md:flex-col md:space-y-2 space-x-2 md:space-x-0`}>
                         <MenuSelector setActivePage={setActivePage} currentActivePage={activePage} name={"Survey analysis"}/>
                         <MenuSelector setActivePage={setActivePage} currentActivePage={activePage} name={"Survey responses"}/>
                     </div>
