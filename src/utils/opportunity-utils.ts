@@ -56,6 +56,75 @@ export async function getSurveyResponses(opportunityId: number) {
    return surveyResponses;
 }
 
+export async function getAllSurveyResponses() {
+    const opportunity = await prisma.opportunity.findMany({
+        select: {
+            slots: {
+                select: {
+                    id: true
+                }
+            }
+        }
+    });
+    const slotIds = opportunity.map(opportunity => opportunity.slots.map(slot => slot.id)).flat();
+
+    const slots = await prisma.slot.findMany({
+        where: {
+            id: {
+                in: slotIds
+            }
+        },
+        select: {
+            name: true,
+            surveyResponses: {
+                select: {
+                    applicationId: true,
+                    updatedAt: true,
+                }
+            },
+            opportunity: {
+                select: {
+                    id: true,
+                    name: true,
+                    project: {
+                        select: {
+                            sdg: true
+                        }
+                    }
+                }
+
+            }
+        }
+    });
+    const surveyResponses: {
+        applicationId: number,
+        opportunity?: {
+            id: number,
+            name: string,
+            sdg: number
+        },
+        slotName: string,
+        updatedAt: Date
+    }[] = [];
+    slots.forEach(slot => {
+        slot.surveyResponses.forEach(surveyResponse => {
+            surveyResponses.push({
+                applicationId: surveyResponse.applicationId,
+                opportunity: {
+                    id: slot.opportunity.id,
+                    name: slot.opportunity.name,
+                    sdg: slot.opportunity.project.sdg
+                },
+                slotName: slot.name,
+                updatedAt: surveyResponse.updatedAt
+            });
+        });
+    });
+
+    return surveyResponses;
+}
+
+
 export async function getSurveyResponsesForProject(projectId: number): Promise<{
     applicationId: number,
     opportunity: {

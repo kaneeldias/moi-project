@@ -1,5 +1,6 @@
 import React, {Suspense} from "react";
-import ProjectsTable, {ProjectsTableSkeleton} from "@/components/tables/ProjectsTable";
+import SurveyResponsesTable from "@/components/tables/SurveyResponsesTable";
+import SurveyResponsesTableSkeleton from "@/components/tables/SurveyResponsesTableSkeleton";
 
 export default async function Opportunities() {
     return (
@@ -7,12 +8,11 @@ export default async function Opportunities() {
 
             <div className={`flex flex-col space-y-5`}>
 
-                <Suspense fallback={<ProjectsTableSkeleton/>}>
-                    <ProjectsTable/>
+                <Suspense fallback={<SurveyResponsesTableSkeleton/>}>
+                    <SurveyResponsesTable/>
                 </Suspense>
 
             </div>
         </div>
     );
 }
-

@@ -14,7 +14,7 @@ export default function Error({error, reset,}: {
     }, [error])
 
     return (
-        <div className={`space-y-10 w-full md:max-w-3xl`}>
+        <div className={`space-y-10 md:max-w-3xl justify-center`}>
             <div className={`flex flex-col space-y-2`}>
                 <Heading>Something went wrong ☹️</Heading>
                 <div className={`text-sm text-gray-800 font-light`}>

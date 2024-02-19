@@ -10,6 +10,7 @@ import HostEntityChipSkeleton from "@/components/chips/HostEntityChipSkeleton";
 import HostEntityChip from "@/components/chips/HostEntityChip";
 import {getProjects} from "@/utils/project-utils";
 import ProjectChip from "@/components/chips/ProjectChip";
+import TableSkeleton from "@/components/tables/TableSkeleton";
 
 const COLUMNS = [
     {
@@ -50,6 +51,18 @@ export default async function Projects() {
         <div className={`p-1 rounded-md bg-white h-fit w-full md:w-[800px] shadow-md`}>
             <CardTitle title={`Projects`}/>
             <Table columns={COLUMNS} rows={rows}/>
+        </div>
+
+    );
+}
+
+export function ProjectsTableSkeleton() {
+    return (
+        <div className={`p-1 rounded-md bg-white h-fit w-full md:w-[800px] shadow-md`}>
+
+            <CardTitle title={`Projects`}/>
+            <TableSkeleton/>
+
         </div>
 
     );

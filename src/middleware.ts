@@ -25,7 +25,25 @@ export async function middleware(request: NextRequest) {
 
     const response = NextResponse.next();
     if (!isAccessTokenPresent()) {
-        const refreshTokenResponse: GetTokenResponse = await refreshAccessToken();
+        let refreshTokenResponse: GetTokenResponse;
+
+        try {
+            refreshTokenResponse = await refreshAccessToken();
+        } catch (e) {
+            const url = new URL(`${process.env.GIS_AUTH_ENDPOINT}/oauth/authorize`);
+            url.searchParams.set("response_type", "code");
+            url.searchParams.set("client_id", process.env.NEXT_PUBLIC_AUTH_CLIENT_ID!);
+            url.searchParams.set("redirect_uri", process.env.NEXT_PUBLIC_AUTH_REDIRECT_URI!);
+            const response = NextResponse.redirect(url.toString());
+
+            response.cookies.set("redirect_uri", lastUrl, {
+                httpOnly: true,
+                secure: true,
+                sameSite: "strict"
+            });
+
+            return response;
+        }
         response.cookies.set("access_token", refreshTokenResponse.access_token, {
             httpOnly: true,
             secure: true,

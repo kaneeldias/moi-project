@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "text": "My community has a strong network of organizations and individuals that work together to provide opportunities for people to get essential math and literacy skills.",
+        "initial": true,
+        "final": true
+    },
+    {
+        "id": 2,
+        "text": "My community actively invests and works to provide opportunities to get essential math and literacy skills to its members.",
+        "initial": true,
+        "final": true
+    },
+    {
+        "id": 10,
+        "text": "How much interest do you take in your and your communities education?",
+        "initial": false,
+        "final": true
+    },
+    {
+        "id": 11,
+        "text": "On a scale from 1 to 10 how likely are you to recommend participating in this project for a friend?",
+        "initial": false,
+        "final": true
+    }
+]

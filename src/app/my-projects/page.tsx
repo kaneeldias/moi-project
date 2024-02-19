@@ -70,8 +70,12 @@ async function getProjects(): Promise<Project[]> {
 
     const projects: Project[] = [];
     for (const application of personApplications) {
-        const project = mapProject(application);
-        projects.push(project);
+        try {
+            const project = mapProject(application);
+            projects.push(project);
+        } catch (e) {
+            console.error(e)
+        }
     }
 
     return projects;
