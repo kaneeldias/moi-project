@@ -7,7 +7,7 @@ import {text} from "node:stream/consumers";
 import {nodeToString} from "@/utils/string-utils";
 
 type column = {
-    name: string;
+    name: string | ReactNode;
 }
 
 type Props = {
@@ -52,8 +52,8 @@ export default function Table(props: Props) {
                 <table className="w-full min-w-full md:min-w-max table-auto text-left">
                 <thead>
                 <tr>
-                    {headers.map((head) => (
-                        <th key={head} className="border-b border-blue-gray-100 bg-white p-2 py-4 text-sm">
+                    {headers.map((head, index) => (
+                        <th key={index} className="border-b border-blue-gray-100 bg-white p-2 py-4 text-sm">
                             <div
                             >
                                 {head}

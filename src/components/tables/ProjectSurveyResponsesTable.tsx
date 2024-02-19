@@ -9,6 +9,7 @@ import ApplicationOwnerChipSkeleton from "@/components/chips/ApplicationOwnerChi
 import ApplicationOwnerChip from "@/components/chips/ApplicationOwnerChip";
 import HostEntityChip from "@/components/chips/HostEntityChip";
 import OpportunityChip from "@/components/chips/OpportunityChip";
+import HostTableHeader from "@/components/tables/HostTableHeader";
 
 const COLUMNS = [
     {
@@ -21,7 +22,7 @@ const COLUMNS = [
         name: "Opportunity"
     },
     {
-        name: "Host"
+        name: <HostTableHeader/>
     },
     {
         name: "Slot"

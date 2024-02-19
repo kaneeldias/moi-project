@@ -9,6 +9,7 @@ import ApplicationOwnerChipSkeleton from "@/components/chips/ApplicationOwnerChi
 import ApplicationOwnerChip from "@/components/chips/ApplicationOwnerChip";
 import OpportunityChip from "@/components/chips/OpportunityChip";
 import HostEntityChip from "@/components/chips/HostEntityChip";
+import HostTableHeader from "@/components/tables/HostTableHeader";
 
 type Props = {
     opportunityId?: number;
@@ -17,7 +18,9 @@ type Props = {
 export default async function SurveyResponsesTable(props: Props) {
     await waitRandomTime();
 
-    const COLUMNS = [
+    const COLUMNS: {
+        name: string | React.ReactNode;
+    }[] = [
         {
             name: "ID"
         },
@@ -67,7 +70,7 @@ export default async function SurveyResponsesTable(props: Props) {
 
     if (!props.opportunityId) {
         COLUMNS.splice(2, 0, {name: "Opportunity"});
-        COLUMNS.splice(3, 0, {name: "Host"});
+        COLUMNS.splice(3, 0, {name: <HostTableHeader/>});
         
         rows.forEach((row, index) => {
             const opportunity = surveyResponses[index].opportunity!;

@@ -8,6 +8,7 @@ import LocationText from "@/components/LocationText";
 import OpportunityChip from "@/components/chips/OpportunityChip";
 import HostEntityChipSkeleton from "@/components/chips/HostEntityChipSkeleton";
 import HostEntityChip from "@/components/chips/HostEntityChip";
+import HostTableHeader from "@/components/tables/HostTableHeader";
 
 const COLUMNS = [
     {
@@ -17,7 +18,7 @@ const COLUMNS = [
         name: "Opportunity"
     },
     {
-        name: "Host"
+        name: <HostTableHeader/>
     },
     {
         name: "Location"
