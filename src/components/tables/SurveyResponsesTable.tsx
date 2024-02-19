@@ -79,8 +79,6 @@ export default async function SurveyResponsesTable(props: Props) {
         });
     }
 
-    console.log(COLUMNS);
-
     return (
         <div className={`p-1 rounded-md bg-white h-fit w-full md:w-[800px] shadow-md`}>
 

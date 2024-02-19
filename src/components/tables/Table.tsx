@@ -5,6 +5,7 @@ import {flushSync} from "react-dom";
 import {createRoot} from "react-dom/client";
 import {text} from "node:stream/consumers";
 import {nodeToString} from "@/utils/string-utils";
+import Image from "next/image";
 
 type column = {
     name: string | ReactNode;
@@ -21,6 +22,7 @@ export default function Table(props: Props) {
 
     const [search, setSearch] = useState("");
     const [displayedRows, setDisplayedRows] = useState<ReactNode[][]>(rows);
+    const [searchActive, setSearchActive] = useState(false);
 
     function handleSearch(event: React.ChangeEvent<HTMLInputElement>) {
         const searchTerm = event.target.value;
@@ -39,8 +41,11 @@ export default function Table(props: Props) {
     }
 
     return (
-        <div className={`transition-all overflow-x-scroll md:overflow-x-hidden`}>
-            <input name="search" type="text" className="w-48 border-2 border-gray-200 p-2 m-3 text-xs rounded-sm hover:border-blue-200 focus:border-blue-700 transition-all outline-none" placeholder="Search..." value={search} onChange={handleSearch}/>
+        <div className={`transition-all overflow-x-scroll md:overflow-x-hidden relative`}>
+            <Image src={"/icons/search.png"} alt={"search"} className={`absolute top-[22px] left-[20px] ${!searchActive ? "grayscale opacity-50" : ""} transition-all duration-300`} width={16} height={16}/>
+            <input name="search" type="text"
+                   className="w-48 border-2 border-gray-200 p-2 pl-8 m-3 text-xs rounded-sm hover:border-blue-200 focus:border-blue-500 transition-all outline-none text-gray-600 focus:text-gray-800"
+                   value={search} onChange={handleSearch} onFocus={() => setSearchActive(true)} onBlur={() => setSearchActive(false)}/>
 
             { displayedRows.length === 0 &&
                 <div className="text-center text-gray-500 p-5 text-xs">
