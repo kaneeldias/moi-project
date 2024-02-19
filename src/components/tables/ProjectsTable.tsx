@@ -39,7 +39,7 @@ export default async function Projects() {
                     </div>
                 </Link>,
 
-             <ProjectChip name={project.name} sdg={project.sdg}/>,
+             <ProjectChip name={project.name} sdg={project.sdg} id={project.id}/>,
 
             <div>{project.opportunityCount}</div>,
 
