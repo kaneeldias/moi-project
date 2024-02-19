@@ -1,11 +1,10 @@
-import {PrismaClient, QuestionType} from "@prisma/client";
+import {QuestionType} from "@prisma/client";
 import {prisma} from "@/utils/prisma-utils";
 import {gql} from "@apollo/client";
 import {runQuery} from "@/utils/graphql-utils";
 import {Opportunity} from "@/types/project-types";
 import {getFullSurveyResponses, getQuestions} from "@/utils/questionnaire-utils";
 import {AnalysisRow, QuestionStructure} from "@/types/question-types";
-import {Answer} from "@/components/questions/QuestionnaireInner";
 
 export async function getSurveyResponses(opportunityId: number) {
     const opportunity = await prisma.opportunity.findUnique({

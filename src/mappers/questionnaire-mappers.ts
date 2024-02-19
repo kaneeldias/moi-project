@@ -12,7 +12,6 @@ export function mapQuestionnaireToRequest(counts: Answer, answers: AnswerList): 
     Object.keys(answers).map((key) => {
         const answer = answers[parseInt(key)];
         const questionId = parseInt(key);
-        let res = {};
 
         if (answer.initial !== null) {
             answersFormatted.push({

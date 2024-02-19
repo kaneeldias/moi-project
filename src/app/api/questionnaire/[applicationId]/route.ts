@@ -1,5 +1,4 @@
 import {NextRequest, NextResponse} from "next/server";
-import {PrismaClient, } from '@prisma/client'
 import {QuestionnaireSubmissionRequest} from "@/types/question-types";
 import {verifyCanSubmitQuestionnaire} from "@/utils/application-utils";
 import {getOpportunityAndProjectFromApplication} from "@/utils/project-utils";

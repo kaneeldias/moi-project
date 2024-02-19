@@ -1,5 +1,5 @@
 import Link from "next/link";
-import {getSurveyResponses, getSurveyResponsesForProject} from "@/utils/opportunity-utils";
+import {getSurveyResponsesForProject} from "@/utils/opportunity-utils";
 import React, {Suspense} from "react";
 import {formatDateToDateTime} from "@/utils/datetime-utils";
 import Table from "@/components/tables/Table";

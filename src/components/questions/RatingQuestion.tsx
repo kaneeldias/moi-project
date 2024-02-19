@@ -1,9 +1,10 @@
 import RatingInput from "@/components/inputs/RatingInput";
 import {Answer} from "@/components/questions/QuestionnaireInner";
 import Question from "@/components/questions/Question";
+import {ReactNode} from "react";
 
 type Props = {
-    children: React.ReactNode;
+    children: ReactNode;
     id: number,
     initial: boolean,
     final: boolean,
@@ -29,7 +30,7 @@ export default function RatingQuestion(props: Props) {
         props.answer.final = value;
     }
 
-    const ratingInputs: React.ReactNode = (
+    const ratingInputs: ReactNode = (
         <div className={'flex flex-row space-x-5'}>
             <RatingInput label={`Initial ${postfix}`} disabled={!props.initial}
                          value={props.answer.initial} setValue={updateInitial}/>

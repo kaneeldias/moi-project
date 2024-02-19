@@ -1,7 +1,6 @@
 import {getApplicationOwner} from "@/utils/application-utils";
 import Link from "next/link";
 import React from "react";
-import {Avatar, Chip, Typography} from "@material-tailwind/react";
 import Image from "next/image";
 import {waitRandomTime} from "@/utils/test-utils";
 

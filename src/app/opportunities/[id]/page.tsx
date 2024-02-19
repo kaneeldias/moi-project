@@ -1,7 +1,6 @@
 import React from "react";
 import OpportunityContent from "@/app/opportunities/[id]/content";
 import OpportunityBox from "@/components/OpportunityBox";
-import {cookies} from "next/headers";
 import OpportunityAnalysisTable from "@/components/tables/OpportunityAnalysisTable";
 import SurveyResponsesTable from "@/components/tables/SurveyResponsesTable";
 

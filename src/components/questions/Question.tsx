@@ -1,7 +1,7 @@
 import {ReactNode} from "react";
 
 type Props = {
-    children: React.ReactNode;
+    children: ReactNode;
     input: ReactNode;
 }
 

@@ -1,9 +1,6 @@
 "use client"
 
-import {ReactNode, useEffect, useState} from "react";
-import {flushSync} from "react-dom";
-import {createRoot} from "react-dom/client";
-import {text} from "node:stream/consumers";
+import React, {ReactNode, useState} from "react";
 import {nodeToString} from "@/utils/string-utils";
 import Image from "next/image";
 

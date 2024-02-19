@@ -5,7 +5,7 @@ import Heading from "@/components/Heading";
 import {usePathname} from "next/navigation";
 import {CardTitle} from "@/components/CardTitle";
 
-export default function Error({error, reset,}: {
+export default function Error({error}: {
     error: Error & { digest?: string }
     reset: () => void
 }) {

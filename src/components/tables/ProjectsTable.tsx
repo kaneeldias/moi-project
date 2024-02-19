@@ -1,13 +1,8 @@
 import Link from "next/link";
-import {getLocation, getOpportunities, getSurveyResponses} from "@/utils/opportunity-utils";
-import React, {Suspense} from "react";
+import React from "react";
 import Table from "@/components/tables/Table";
 import {waitRandomTime} from "@/utils/test-utils";
 import {CardTitle} from "@/components/CardTitle";
-import LocationText from "@/components/LocationText";
-import OpportunityChip from "@/components/chips/OpportunityChip";
-import HostEntityChipSkeleton from "@/components/chips/HostEntityChipSkeleton";
-import HostEntityChip from "@/components/chips/HostEntityChip";
 import {getProjects} from "@/utils/project-utils";
 import ProjectChip from "@/components/chips/ProjectChip";
 import TableSkeleton from "@/components/tables/TableSkeleton";

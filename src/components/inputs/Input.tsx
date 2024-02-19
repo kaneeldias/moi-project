@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {ChangeEvent, useState} from "react";
 import {validateInput} from "@/validators/input-validators";
 
 type Props = {
@@ -18,7 +18,7 @@ export default function Input(props: Props) {
     const [value, setValue] = useState(props.value);
     const [error, setError] = useState<string>("");
 
-    const handleChange = function(event: React.ChangeEvent<HTMLInputElement>) {
+    const handleChange = function(event: ChangeEvent<HTMLInputElement>) {
         setError("");
         const value = event.target.value;
 

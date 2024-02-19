@@ -1,7 +1,6 @@
 import {gql} from "@apollo/client";
 import {runQuery} from "@/utils/graphql-utils";
 import {forceGetPersonId, isAiEbMember} from "@/utils/person-utils";
-import {Project} from "@/types/project-types";
 
 async function getApplicationOwnerId(applicationId: number): Promise<number> {
     const query = gql`

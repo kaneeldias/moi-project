@@ -1,4 +1,3 @@
-import {getOpportunityAnalysis} from "@/utils/opportunity-utils";
 import Table from "@/components/tables/Table";
 import {waitRandomTime} from "@/utils/test-utils";
 import React from "react";

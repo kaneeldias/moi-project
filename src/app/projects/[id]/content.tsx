@@ -2,7 +2,6 @@
 
 import React, {ReactNode, Suspense, useState} from "react";
 import OpportunityBoxSkeleton from "@/components/OpportunityBoxSkeleton";
-import SurveyResponsesTableSkeleton from "@/components/tables/SurveyResponsesTableSkeleton";
 import OpportunityAnalysisTableSkeleton from "@/components/tables/OpportunityAnalysisTableSkeleton";
 import {MenuSelector} from "@/components/MenuSelector";
 import OpportunitiesTableSkeleton from "@/components/tables/OpportunitiesTableSkeleton";

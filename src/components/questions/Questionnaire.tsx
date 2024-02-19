@@ -1,5 +1,3 @@
-import {QuestionStructure} from "@/types/question-types";
-import { promises as fs } from 'fs';
 import QuestionnaireInner from "@/components/questions/QuestionnaireInner";
 import {getQuestions, getSurveyResponse} from "@/utils/questionnaire-utils";
 

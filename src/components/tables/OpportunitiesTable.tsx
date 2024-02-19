@@ -1,5 +1,5 @@
 import Link from "next/link";
-import {getLocation, getOpportunities, getOpportunitiesOfProject, getSurveyResponses} from "@/utils/opportunity-utils";
+import {getOpportunities, getOpportunitiesOfProject} from "@/utils/opportunity-utils";
 import React, {Suspense} from "react";
 import Table from "@/components/tables/Table";
 import {waitRandomTime} from "@/utils/test-utils";

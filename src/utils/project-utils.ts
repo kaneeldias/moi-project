@@ -1,11 +1,9 @@
-import {Opportunity} from "@/types/project-types";
 import {gql} from "@apollo/client";
 import {runQuery} from "@/utils/graphql-utils";
 import {prisma} from "@/utils/prisma-utils";
 import {AnalysisRow, QuestionStructure} from "@/types/question-types";
-import {getFullSurveyResponses, getFullSurveyResponsesForProject, getQuestions} from "@/utils/questionnaire-utils";
+import {getFullSurveyResponsesForProject, getQuestions} from "@/utils/questionnaire-utils";
 import {QuestionType} from "@prisma/client";
-import {getOpportunity} from "@/utils/opportunity-utils";
 
 export async function getOpportunityAndProjectFromApplication(applicationId: number): Promise<{
     opportunityId: number,

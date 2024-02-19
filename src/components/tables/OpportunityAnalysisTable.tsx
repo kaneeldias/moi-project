@@ -1,6 +1,5 @@
 import {getOpportunityAnalysis} from "@/utils/opportunity-utils";
 import Table from "@/components/tables/Table";
-import {truncateString} from "@/utils/string-utils";
 import {waitRandomTime} from "@/utils/test-utils";
 import React from "react";
 import {CardTitle} from "@/components/CardTitle";
