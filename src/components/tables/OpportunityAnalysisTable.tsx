@@ -22,6 +22,10 @@ const COLUMNS = [
     }
 ]
 
+const PAGINATION = {
+    page: 1,
+    perPage: 999
+}
 
 type Props = {
     opportunityId: number;
@@ -49,7 +53,7 @@ export default async function OpportunityAnalysisTable(props: Props) {
         <div className={`p-1 rounded-md bg-white h-fit w-full md:w-[800px] shadow-md`}>
 
             <CardTitle title={`Responses Analysis`} color={`blue`}/>
-            <Table columns={COLUMNS} rows={rows}/>
+            <Table columns={COLUMNS} rows={rows} showPagination={false}/>
 
         </div>
 
