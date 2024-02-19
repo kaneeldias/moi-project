@@ -7,7 +7,7 @@ import SideBar from "@/components/layouts/SideBar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "AIESEC | MOI",
+  title: "Impact with AIESEC",
   description: "Measurement of Impact",
 };
 
@@ -21,9 +21,9 @@ export default function RootLayout({
             <body className={inter.className}>
                 <div className={`flex flex-col h-full w-full min-h-screen min-w-screen bg-gradient-to-bl from-gray-100 to-gray-200`}>
                     <Header/>
-                    <div className={`flex flex-row flex-grow p-5 text-gray-800 justify-start`}>
+                    <div className={`flex flex-row flex-grow text-gray-800 justify-start`}>
                         <SideBar/>
-                        <div className={`flex flex-row w-full justify-center`}>
+                        <div className={`flex flex-row md:w-full justify-center p-5`}>
                             {children}
                         </div>
                     </div>
