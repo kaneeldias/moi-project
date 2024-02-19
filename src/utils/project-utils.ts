@@ -75,7 +75,8 @@ export async function getProjects(): Promise<{
                             id: true,
                             surveyResponses: {
                                 select: {
-                                    applicationId: true
+                                    applicationId: true,
+                                    updatedAt: true
                                 }
                             }
                         }
@@ -83,6 +84,26 @@ export async function getProjects(): Promise<{
                 }
             }
         }
+    });
+
+    projects.sort((a, b) => {
+        const aLastUpdated = a.opportunities.reduce((acc, opportunity) => {
+            return Math.max(acc, opportunity.slots.reduce((acc, slot) => {
+                return Math.max(acc, slot.surveyResponses.reduce((acc, response) => {
+                    return Math.max(acc, response.updatedAt.getTime());
+                }, 0));
+            }, 0));
+        }, 0);
+
+        const bLastUpdated = b.opportunities.reduce((acc, opportunity) => {
+            return Math.max(acc, opportunity.slots.reduce((acc, slot) => {
+                return Math.max(acc, slot.surveyResponses.reduce((acc, response) => {
+                    return Math.max(acc, response.updatedAt.getTime());
+                }, 0));
+            }, 0));
+        }, 0);
+
+        return bLastUpdated - aLastUpdated;
     });
 
     return projects.map(project => {

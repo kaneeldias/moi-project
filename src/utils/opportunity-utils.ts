@@ -35,8 +35,9 @@ export async function getSurveyResponses(opportunityId: number) {
                     updatedAt: true,
                 }
             }
-        }
+        },
     });
+
     const surveyResponses: {
         applicationId: number,
         slotName: string,
@@ -52,7 +53,8 @@ export async function getSurveyResponses(opportunityId: number) {
         });
     });
 
-   return surveyResponses;
+    surveyResponses.sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime());
+    return surveyResponses;
 }
 
 export async function getAllSurveyResponses() {
@@ -120,6 +122,7 @@ export async function getAllSurveyResponses() {
         });
     });
 
+    surveyResponses.sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime());
     return surveyResponses;
 }
 
@@ -201,6 +204,7 @@ export async function getSurveyResponsesForProject(projectId: number): Promise<{
         });
     });
 
+    surveyResponses.sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime());
     return surveyResponses;
 }
 
@@ -313,11 +317,15 @@ export async function getOpportunities() {
                 select: {
                     surveyResponses: {
                         select: {
-                            applicationId: true
+                            applicationId: true,
+                            updatedAt: true
                         }
                     }
                 }
             }
+        },
+        orderBy: {
+            id: "desc"
         }
     });
 
@@ -330,6 +338,22 @@ export async function getOpportunities() {
         }
         responsesCount: number
     }[] = [];
+
+    opportunities.sort((a, b) => {
+        const aLastUpdate = a.slots.reduce((acc, slot) => {
+            return Math.max(acc, slot.surveyResponses.reduce((acc, response) => {
+                return Math.max(acc, response.updatedAt.getTime());
+            }, 0));
+        }, 0);
+
+        const bLastUpdate = b.slots.reduce((acc, slot) => {
+            return Math.max(acc, slot.surveyResponses.reduce((acc, response) => {
+                return Math.max(acc, response.updatedAt.getTime());
+            }, 0));
+        }, 0);
+
+        return bLastUpdate - aLastUpdate;
+    });
 
     for (const opportunity of opportunities) {
         const responsesCount = opportunity.slots.reduce((acc, slot) => {
@@ -368,7 +392,8 @@ export async function getOpportunitiesOfProject(projectId: number) {
                 select: {
                     surveyResponses: {
                         select: {
-                            applicationId: true
+                            applicationId: true,
+                            updatedAt: true
                         }
                     }
                 }
@@ -385,6 +410,22 @@ export async function getOpportunitiesOfProject(projectId: number) {
         }
         responsesCount: number
     }[] = [];
+
+    opportunities.sort((a, b) => {
+        const aLastUpdate = a.slots.reduce((acc, slot) => {
+            return Math.max(acc, slot.surveyResponses.reduce((acc, response) => {
+                return Math.max(acc, response.updatedAt.getTime());
+            }, 0));
+        }, 0);
+
+        const bLastUpdate = b.slots.reduce((acc, slot) => {
+            return Math.max(acc, slot.surveyResponses.reduce((acc, response) => {
+                return Math.max(acc, response.updatedAt.getTime());
+            }, 0));
+        }, 0);
+
+        return bLastUpdate - aLastUpdate;
+    });
 
     for (const opportunity of opportunities) {
         const responsesCount = opportunity.slots.reduce((acc, slot) => {
