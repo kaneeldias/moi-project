@@ -1,4 +1,4 @@
   #!/bin/bash
-  cd /var/
+  cd /var/moi-project/
   rm -r node_modules/
   yarn install
