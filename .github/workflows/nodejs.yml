@@ -58,7 +58,7 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-          aws_region: us-west-1
+          aws_region: eu-west-1
           codedeploy_name: moi-project
           codedeploy_group: dev
           codedeploy_register_only: false
