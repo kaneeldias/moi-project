@@ -1,0 +1,40 @@
+name: DEV Node.js CI
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [21.5.0]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: "Build project"
+        run: |
+          yarn install
+          yarn build
+          rm -r node_modules
+
+      - name: AWS CodeDeploy
+        uses: sourcetoad/aws-codedeploy-action@v1
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          aws_region: us-west-1
+          codedeploy_name: moi-project
+          codedeploy_group: dev
+          codedeploy_register_only: false
+          s3_bucket: moi-project-bucket
+          s3_folder: dev
+          max_polling_iterations: 0
+          directory: ./
