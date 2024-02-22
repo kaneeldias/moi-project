@@ -41,3 +41,4 @@ localhost.key
 certificates
 /.env
 /prisma/migrations/
+/.env.prod
