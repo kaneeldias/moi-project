@@ -42,7 +42,7 @@ jobs:
 
       - name: "Init database"
         run:
-          prisma db push
+          npx prisma db push
 
       - name: "Build project"
         run: |
