@@ -26,19 +26,19 @@ export default async function Projects() {
     await waitRandomTime();
 
     const projects = await getProjects();
-    const rows = projects.map((project) => {
+    const rows = projects.map((project, index) => {
         return [
-                <Link href={`/projects/${project.id}`}>
+                <Link key={index} href={`/projects/${project.id}`}>
                     <div className={`bg-gray-300 rounded-sm p-1 px-2 bg-opacity-50 hover:bg-opacity-100 hover:bg-blue-600 hover:text-white font-bold transition-all text-center w-14`}>
                         {project.id}
                     </div>
                 </Link>,
 
-             <ProjectChip name={project.name} sdg={project.sdg} id={project.id}/>,
+             <ProjectChip key={index} name={project.name} sdg={project.sdg} id={project.id}/>,
 
-            <div>{project.opportunityCount}</div>,
+            <div key={index}>{project.opportunityCount}</div>,
 
-            <div>{project.responsesCount}</div>
+            <div key={index}>{project.responsesCount}</div>
         ];
     });
 

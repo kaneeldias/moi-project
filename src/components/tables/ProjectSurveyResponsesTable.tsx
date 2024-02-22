@@ -40,21 +40,21 @@ export default async function ProjectSurveyResponsesTable(props: Props) {
     await waitRandomTime();
 
     const surveyResponses = await getSurveyResponsesForProject(props.projectId);
-    const rows = surveyResponses.map((response) => {
+    const rows = surveyResponses.map((response, index) => {
         return [
-            <Link href={`/questionnaire/${response.applicationId}`}>
+            <Link key={index} href={`/questionnaire/${response.applicationId}`}>
                 <div className={`bg-gray-300 rounded-sm p-1 px-2 bg-opacity-50 hover:bg-opacity-100 hover:bg-blue-600 hover:text-white font-bold transition-all text-center w-14`}>
                     {response.applicationId}
                 </div>
             </Link>,
 
-            <Suspense fallback={<ApplicationOwnerChipSkeleton/>}>
+            <Suspense key={index} fallback={<ApplicationOwnerChipSkeleton/>}>
                 <ApplicationOwnerChip applicationId={response.applicationId}/>
             </Suspense>,
 
-            <OpportunityChip id={response.opportunity.id} name={response.opportunity.name} sdg={response.opportunity.project.sdg}/>,
+            <OpportunityChip key={index} id={response.opportunity.id} name={response.opportunity.name} sdg={response.opportunity.project.sdg}/>,
 
-            <Suspense fallback={<ApplicationOwnerChipSkeleton/>}>
+            <Suspense key={index} fallback={<ApplicationOwnerChipSkeleton/>}>
                 <HostEntityChip opportunityId={response.opportunity.id}/>
             </Suspense>,
 

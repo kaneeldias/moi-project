@@ -39,25 +39,25 @@ export default async function OpportunitiesTable(props: Props) {
     if (props.projectId) opportunities = await getOpportunitiesOfProject(props.projectId);
     else opportunities = await getOpportunities();
 
-    const rows = opportunities.map((opportunity) => {
+    const rows = opportunities.map((opportunity, index) => {
         return [
-                <Link href={`/opportunities/${opportunity.id}`}>
-                    <div className={`bg-gray-300 rounded-sm p-1 px-2 bg-opacity-50 hover:bg-opacity-100 hover:bg-blue-600 hover:text-white font-bold transition-all text-center w-14`}>
-                        {opportunity.id}
-                    </div>
-                </Link>,
+            <Link key={index} href={`/opportunities/${opportunity.id}`}>
+                <div className={`bg-gray-300 rounded-sm p-1 px-2 bg-opacity-50 hover:bg-opacity-100 hover:bg-blue-600 hover:text-white font-bold transition-all text-center w-14`}>
+                    {opportunity.id}
+                </div>
+            </Link>,
 
-            <OpportunityChip id={opportunity.id} name={opportunity.name} sdg={opportunity.project.sdg}/>,
+            <OpportunityChip key={index} id={opportunity.id} name={opportunity.name} sdg={opportunity.project.sdg}/>,
 
-            <Suspense fallback={<HostEntityChipSkeleton/>}>
+            <Suspense key={index} fallback={<HostEntityChipSkeleton/>}>
                 <HostEntityChip opportunityId={opportunity.id}/>
             </Suspense>,
 
-            <Suspense fallback={<div className={`flex h-2.5 flex-row space-x-1 items-center bg-gray-400 rounded-full dark:bg-gray p-1 px-2 w-28`}/>}>
+            <Suspense key={index} fallback={<div className={`flex h-2.5 flex-row space-x-1 items-center bg-gray-400 rounded-full dark:bg-gray p-1 px-2 w-28`}/>}>
                 <LocationText opportunityId={opportunity.id}/>
             </Suspense>,
 
-            <div>{opportunity.responsesCount}</div>
+            <div key={index}>{opportunity.responsesCount}</div>
         ];
     });
 

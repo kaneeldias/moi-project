@@ -35,11 +35,11 @@ export default async function OpportunityAnalysisTable(props: Props) {
     await waitRandomTime();
     const analysis = await getOpportunityAnalysis(props.opportunityId);
 
-    const rows = analysis.map((analysisRow) => {
+    const rows = analysis.map((analysisRow, index) => {
         return [
-            <div>{analysisRow.id}</div>,
+            <div key={index}>{analysisRow.id}</div>,
 
-            <div className={`max-w-md`}>{analysisRow.question}</div>,
+            <div key={index} className={`max-w-md`}>{analysisRow.question}</div>,
 
             getScorecard(analysisRow.totalInitialCount, analysisRow.averageInitialScore),
 
