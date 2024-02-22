@@ -1,5 +1,5 @@
   #!/bin/bash
   cd /var/moi-project/
   rm -r node_modules/
-  yarn install
+  npm install
   yarn prisma migrate deploy
