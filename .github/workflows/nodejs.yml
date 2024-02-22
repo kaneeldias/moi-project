@@ -36,6 +36,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: "Init database"
+        run:
+          prisma db push
+
       - name: "Build project"
         run: |
           yarn install
