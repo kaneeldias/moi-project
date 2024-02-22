@@ -14,7 +14,7 @@ export default async function OpportunityBox(props: Props) {
 
     return (
         <Link className={`flex flex-row h-fit w-full md:w-fit mt-5`}
-              href={`${process.env.NEXT_PUBLIC_BASE_URL}/opportunities/${opportunity.id}`}>
+              href={`/opportunities/${opportunity.id}`}>
             <div
                 className={"flex flex-row bg-white rounded-md shadow-md text-gray-800 h-24 md:min-w-[400px] w-full md:w-fit"}>
                 <div className={`h-96`}>

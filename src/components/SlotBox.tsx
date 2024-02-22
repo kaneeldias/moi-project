@@ -9,7 +9,7 @@ type Props = {
 
 export default function SlotBox(props: Props) {
     return (
-        <Link className={`flex flex-row h-fit w-full md:w-fit`} href={`${process.env.NEXT_PUBLIC_BASE_URL}/questionnaire/${props.project.id}`}>
+        <Link className={`flex flex-row h-fit w-full md:w-fit`} href={`/questionnaire/${props.project.id}`}>
             <div className={"flex flex-row bg-white rounded-md shadow-md text-gray-800 h-24 md:min-w-[400px] w-full md:w-fit"}>
                 <div className={`h-96`}>
                     <Image className={`rounded-l-md`} src={`/sdg_logos/${props.project.sdg}.png`}
