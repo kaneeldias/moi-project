@@ -6,7 +6,7 @@ import {GetTokenResponse} from "@/app/auth/auth-types";
 export async function GET(request: NextRequest) {
     const code: string = request.nextUrl.searchParams.get("code") as string;
     const authResponse: GetTokenResponse = await getAccessTokenFromOauth(code);
-    let response = NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/`, {status: 302});
+    let response = NextResponse.redirect(`${process.env.BAS}/`, {status: 302});
 
     const redirect_uri = cookies().get("redirect_uri")?.value;
     if (redirect_uri) {

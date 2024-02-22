@@ -20,9 +20,9 @@ export function isAccessTokenPresent(): boolean {
 export async function getAccessTokenFromOauth(code: string): Promise<GetTokenResponse> {
     const requestData = {
         grant_type: "authorization_code",
-        client_id: process.env.NEXT_PUBLIC_AUTH_CLIENT_ID!,
-        client_secret: process.env.NEXT_PUBLIC_AUTH_CLIENT_SECRET!,
-        redirect_uri: process.env.NEXT_PUBLIC_AUTH_REDIRECT_URI!,
+        client_id: process.env.AUTH_CLIENT_ID!,
+        client_secret: process.env.AUTH_CLIENT_SECRET!,
+        redirect_uri: process.env.AUTH_REDIRECT_URI!,
         code: code
     }
 
@@ -52,8 +52,8 @@ export async function refreshAccessToken(): Promise<GetTokenResponse> {
 
     const requestData = {
         grant_type: "refresh_token",
-        client_id: process.env.NEXT_PUBLIC_AUTH_CLIENT_ID!,
-        client_secret: process.env.NEXT_PUBLIC_AUTH_CLIENT_SECRET!,
+        client_id: process.env.AUTH_CLIENT_ID!,
+        client_secret: process.env.AUTH_CLIENT_SECRET!,
         refresh_token: refresh_token!.value
     }
 
