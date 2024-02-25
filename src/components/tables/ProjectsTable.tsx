@@ -29,7 +29,7 @@ export default async function Projects() {
     const rows = projects.map((project, index) => {
         return [
                 <Link key={index} href={`/projects/${project.id}`}>
-                    <div className={`bg-gray-300 rounded-sm p-1 px-2 bg-opacity-50 hover:bg-opacity-100 hover:bg-blue-600 hover:text-white font-bold transition-all text-center w-14`}>
+                    <div className={`bg-gray-300 rounded-sm p-1 px-2 bg-opacity-50 hover:bg-opacity-100 hover:bg-blue-600 hover:text-white font-bold transition-all text-center w-16`}>
                         {project.id}
                     </div>
                 </Link>,
