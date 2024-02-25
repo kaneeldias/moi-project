@@ -46,7 +46,7 @@ jobs:
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/moi-project
 
-      - name: "Build Project"
+      - name: "Build project"
         run: |
           yarn build
           rm -r node_modules
