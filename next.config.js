@@ -15,4 +15,9 @@ module.exports = {
             },
         ],
     },
+    experimental: {
+        serverActions: {
+            allowedOrigins: ['impact-beta.aiesec.org', '*.impact-beta.aiesec.org'],
+        },
+    },
 }
