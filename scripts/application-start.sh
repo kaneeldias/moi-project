@@ -1,5 +1,6 @@
   #!/bin/bash
-  pm2 describe app > /dev/null
+  cd /var/moi-project/
+  pm2 describe npm > /dev/null
   RUNNING=$?
 
   if [ "${RUNNING}" -ne 0 ]; then
