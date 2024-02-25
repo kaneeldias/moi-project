@@ -53,7 +53,7 @@ export default async function SurveyResponsesTable(props: Props) {
     const rows = surveyResponses.map((response, index) => {
         return [
             <Link key={index} href={`/questionnaire/${response.applicationId}`}>
-                <div className={`bg-gray-300 rounded-sm p-1 px-2 bg-opacity-50 hover:bg-opacity-100 hover:bg-blue-600 hover:text-white font-bold transition-all text-center w-16`}>
+                <div className={`bg-gray-300 rounded-sm p-1 px-2 bg-opacity-50 hover:bg-opacity-100 hover:bg-blue-600 hover:text-white font-bold transition-all text-center w-20`}>
                     {response.applicationId}
                 </div>
             </Link>,
