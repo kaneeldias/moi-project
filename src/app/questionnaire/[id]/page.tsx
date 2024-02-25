@@ -6,6 +6,7 @@ import SlotBox from "@/components/SlotBox";
 import Questionnaire from "@/components/questions/Questionnaire";
 import {Suspense} from "react";
 import QuestionnaireSkeleton from "@/components/questions/QuestionnaireSkeleton";
+import {waitRandomTime} from "@/utils/test-utils";
 
 type Props = {
     params: {
@@ -14,6 +15,7 @@ type Props = {
 }
 
 export default async function ProjectQuestionnaire(props: Props) {
+    await waitRandomTime();
     const projectId = props.params.id;
     const project = await getProject(projectId);
 
