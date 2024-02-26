@@ -27,7 +27,7 @@ export default function Table(props: Props) {
     const [validRows, setValidRows] = useState<ReactNode[][]>(rows);
     const [displayedRows, setDisplayedRows] = useState<ReactNode[][]>(rows);
     const [searchActive, setSearchActive] = useState(false);
-    const [pagination, setPagination] = useState(props.pagination ? props.pagination : {page: 1, perPage: 5});
+    const [pagination, setPagination] = useState(props.pagination ? props.pagination : {page: 1, perPage: 15});
 
     useEffect(() => {
         if (!showPagination) {
