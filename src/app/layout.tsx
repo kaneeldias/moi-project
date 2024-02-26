@@ -19,8 +19,8 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={inter.className}>
-                <div className={`flex flex-col h-full w-full min-h-screen min-w-screen bg-gradient-to-bl from-gray-100 to-gray-200`}>
+            <body className={`${inter.className} bg-gradient-to-bl from-gray-100 to-gray-200`}>
+                <div className={`flex flex-col h-full w-full min-h-screen min-w-screen`}>
                     <Header/>
                     <div className={`flex flex-row flex-grow text-gray-800 justify-start`}>
                         <SideBar/>
