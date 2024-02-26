@@ -1,5 +1,5 @@
 export default function Home() {
   return (
-    <div>welcome nerds!</div>
+    <div>welcome iGV!</div>
   );
 }
