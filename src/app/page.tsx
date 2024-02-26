@@ -1,5 +1,5 @@
 export default function Home() {
   return (
-    <div>HEllo</div>
+    <div>welcome nerds!</div>
   );
 }
