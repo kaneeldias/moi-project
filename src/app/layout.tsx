@@ -22,9 +22,9 @@ export default function RootLayout({
             <body className={`${inter.className} bg-gradient-to-bl from-gray-100 to-gray-200`}>
                 <div className={`flex flex-col h-full w-full min-h-screen min-w-screen`}>
                     <Header/>
-                    <div className={`flex flex-row flex-grow text-gray-800 justify-start`}>
+                    <div className={`flex flex-row flex-grow text-gray-800 md:w-full`}>
                         <SideBar/>
-                        <div className={`flex flex-row md:w-full justify-center p-5`}>
+                        <div className={`flex flex-row md:flex-grow justify-center ml-16 p-5`}>
                             {children}
                         </div>
                     </div>
