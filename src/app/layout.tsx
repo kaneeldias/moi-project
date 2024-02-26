@@ -24,7 +24,7 @@ export default function RootLayout({
                     <Header/>
                     <div className={`flex flex-row flex-grow text-gray-800 md:w-full`}>
                         <SideBar/>
-                        <div className={`flex flex-row md:flex-grow justify-center ml-16 p-5`}>
+                        <div className={`flex flex-row md:flex-grow justify-center md:ml-16 p-5`}>
                             {children}
                         </div>
                     </div>
