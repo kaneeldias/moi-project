@@ -61,7 +61,7 @@ export async function runQueryWithAccessToken(accessToken: string,
         },
     });
 
-    const {data, errors} = await client.readQuery({
+    const {data, errors} = await client.query({
         query, variables
     });
 
