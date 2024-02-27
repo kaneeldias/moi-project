@@ -107,8 +107,6 @@ export async function getProjects(): Promise<{
         }
     }
 
-    console.log(projects);
-
     projects.sort((a, b) => {
         const aLastUpdated = a.opportunities.reduce((acc, opportunity) => {
             return Math.max(acc, opportunity.slots.reduce((acc, slot) => {

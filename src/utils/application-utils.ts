@@ -1,6 +1,6 @@
 import {gql} from "@apollo/client";
 import {runQuery} from "@/utils/graphql-utils";
-import {forceGetPersonId, isAiEbMember} from "@/utils/person-utils";
+import {forceGetPersonId, getAccessibleEntities, isAiEbMember} from "@/utils/person-utils";
 
 async function getApplicationOwnerId(applicationId: number): Promise<number> {
     const query = gql`
@@ -16,6 +16,22 @@ async function getApplicationOwnerId(applicationId: number): Promise<number> {
     const queryResponse = await runQuery(query);
     return queryResponse.getApplication.person.id;
 }
+
+async function getApplicationOffice(applicationId: number): Promise<number> {
+    const query = gql`
+        {
+            getApplication(id: "${applicationId}") {
+                host_lc {
+                    id
+                }
+            }
+        }
+    `
+
+    const queryResponse = await runQuery(query);
+    return queryResponse.getApplication.host_lc.id;
+}
+
 
 export async function getApplicationOwner(applicationId: number): Promise<{
     id: number,
@@ -54,5 +70,9 @@ export async function verifyCanSubmitQuestionnaire(applicationId: number) {
 }
 
 export async function verifyCanViewQuestionnaire(applicationId: number) {
-    await getApplicationOwnerId(applicationId);
+    const accessibleEntities = await getAccessibleEntities();
+    const applicationOffice = await getApplicationOffice(applicationId);
+
+    if (accessibleEntities.includes(applicationOffice)) return;
+    else throw new Error("Not authorized");
 }

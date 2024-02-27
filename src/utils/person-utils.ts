@@ -79,3 +79,42 @@ export async function isAiesecer(): Promise<boolean> {
         return false;
     }
 }
+
+export async function getAccessibleEntities(): Promise<number[]> {
+    const officeIds = [];
+
+    const query = gql`
+        {
+            currentPerson {
+                current_offices {
+                    id
+                    suboffices {
+                        id
+                        suboffices {
+                            id
+                            suboffices {
+                                id
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    `
+
+    const queryResponse = await runQuery(query);
+    for (const office of queryResponse.currentPerson.current_offices) {
+        officeIds.push(office.id);
+        for (const suboffice of office.suboffices) {
+            officeIds.push(suboffice.id);
+            for (const subsuboffice of suboffice.suboffices) {
+                officeIds.push(subsuboffice.id);
+                for (const subsubsuboffice of subsuboffice.suboffices) {
+                    officeIds.push(subsubsuboffice.id);
+                }
+            }
+        }
+    }
+
+    return [... new Set(officeIds)];
+}
