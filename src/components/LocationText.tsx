@@ -9,7 +9,12 @@ type Props = {
 export default async function LocationText(props: Props) {
     await waitRandomTime();
 
-    const location = await getLocation(props.opportunityId);
+    let location;
+    try {
+        location = await getLocation(props.opportunityId);
+    } catch (e) {
+        location = "Unknown";
+    }
 
     return (
         <div>

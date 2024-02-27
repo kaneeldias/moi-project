@@ -41,8 +41,10 @@ export async function getFullSurveyResponses(opportunityId: number): Promise<{
         select: {
             slots: {
                 select: {
+                    id: true,
                     surveyResponses: {
                         select: {
+                            applicationId: true,
                             initialCount: true,
                             finalCount: true,
                             answers: {
@@ -59,6 +61,21 @@ export async function getFullSurveyResponses(opportunityId: number): Promise<{
         }
     });
 
+    if (!opportunity) return [];
+    for (const slot of opportunity.slots) {
+        for (const response of slot.surveyResponses) {
+            const applicationId = response.applicationId;
+            try {
+                await verifyCanViewQuestionnaire(applicationId);
+            } catch (e) {
+                slot.surveyResponses = slot.surveyResponses.filter(r => r.applicationId != applicationId);
+            }
+        }
+        if (slot.surveyResponses.length == 0) {
+            opportunity.slots = opportunity.slots.filter(s => s.id != slot.id);
+        }
+    }
+
     const surveyResponses = opportunity?.slots.map(slot => slot.surveyResponses).flat();
     return surveyResponses!;
 }
@@ -72,17 +89,20 @@ export async function getFullSurveyResponsesForProject(projectId: number): Promi
         answer: number;
     }[]
 }[]> {
-    const opportunity = await prisma.project.findUnique({
+    const project = await prisma.project.findUnique({
         where: {
             id: projectId
         },
         select: {
             opportunities: {
                 select: {
+                    id: true,
                     slots: {
                         select: {
+                            id: true,
                             surveyResponses: {
                                 select: {
+                                    applicationId: true,
                                     initialCount: true,
                                     finalCount: true,
                                     answers: {
@@ -101,7 +121,27 @@ export async function getFullSurveyResponsesForProject(projectId: number): Promi
         }
     });
 
-    const surveyResponses = opportunity?.opportunities.map(opportunity => opportunity.slots).flat().map(slot => slot.surveyResponses).flat();
+    if (!project) return [];
+    for (const opportunity of project.opportunities) {
+        for (const slot of opportunity.slots) {
+            for (const response of slot.surveyResponses) {
+                const applicationId = response.applicationId;
+                try {
+                    await verifyCanViewQuestionnaire(applicationId);
+                } catch (e) {
+                    slot.surveyResponses = slot.surveyResponses.filter(r => r.applicationId != applicationId);
+                }
+            }
+            if (slot.surveyResponses.length == 0) {
+                opportunity.slots = opportunity.slots.filter(s => s.id != slot.id);
+            }
+        }
+        if (opportunity.slots.length == 0) {
+            project.opportunities = project.opportunities.filter(o => o.id != opportunity.id);
+        }
+    }
+
+    const surveyResponses = project?.opportunities.map(opportunity => opportunity.slots).flat().map(slot => slot.surveyResponses).flat();
     return surveyResponses!;
 }
 

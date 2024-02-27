@@ -4,6 +4,7 @@ import {prisma} from "@/utils/prisma-utils";
 import {AnalysisRow, QuestionStructure} from "@/types/question-types";
 import {getFullSurveyResponsesForProject, getQuestions} from "@/utils/questionnaire-utils";
 import {QuestionType} from "@prisma/client";
+import {verifyCanViewQuestionnaire} from "@/utils/application-utils";
 
 export async function getOpportunityAndProjectFromApplication(applicationId: number): Promise<{
     opportunityId: number,
@@ -38,7 +39,6 @@ export async function getOpportunityAndProjectFromApplication(applicationId: num
                 }
             }
         }
-
     `
 
     const queryResponse = await runQuery(query);
@@ -85,6 +85,29 @@ export async function getProjects(): Promise<{
             }
         }
     });
+
+    for (const project of projects) {
+        for (const opportunity of project.opportunities) {
+            for (const slot of opportunity.slots) {
+                for (const response of slot.surveyResponses) {
+                    const applicationId = response.applicationId;
+                    try {
+                        await verifyCanViewQuestionnaire(applicationId);
+                    } catch (e) {
+                        slot.surveyResponses = slot.surveyResponses.filter(r => r.applicationId != applicationId);
+                    }
+                }
+                if (slot.surveyResponses.length == 0) {
+                    opportunity.slots = opportunity.slots.filter(s => s.id != slot.id);
+                }
+            }
+            if (opportunity.slots.length == 0) {
+                project.opportunities = project.opportunities.filter(o => o.id != opportunity.id);
+            }
+        }
+    }
+
+    console.log(projects);
 
     projects.sort((a, b) => {
         const aLastUpdated = a.opportunities.reduce((acc, opportunity) => {

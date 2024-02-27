@@ -5,6 +5,7 @@ import {runQuery} from "@/utils/graphql-utils";
 import {Opportunity} from "@/types/project-types";
 import {getFullSurveyResponses, getQuestions} from "@/utils/questionnaire-utils";
 import {AnalysisRow, QuestionStructure} from "@/types/question-types";
+import {verifyCanViewQuestionnaire} from "@/utils/application-utils";
 
 export async function getSurveyResponses(opportunityId: number) {
     const opportunity = await prisma.opportunity.findUnique({
@@ -21,7 +22,7 @@ export async function getSurveyResponses(opportunityId: number) {
     });
     const slotIds = opportunity?.slots.map(slot => slot.id);
 
-    const slots = await prisma.slot.findMany({
+    let slots = await prisma.slot.findMany({
         where: {
             id: {
                 in: slotIds
@@ -37,6 +38,20 @@ export async function getSurveyResponses(opportunityId: number) {
             }
         },
     });
+
+    for (const slot of slots) {
+        for (const response of slot.surveyResponses) {
+            const applicationId = response.applicationId;
+            try {
+                await verifyCanViewQuestionnaire(applicationId);
+            } catch (e) {
+                slot.surveyResponses = slot.surveyResponses.filter(r => r.applicationId != applicationId);
+            }
+        }
+        if (slot.surveyResponses.length == 0) {
+            slots = slots.filter(s => s.name != slot.name);
+        }
+    }
 
     const surveyResponses: {
         applicationId: number,
@@ -69,7 +84,7 @@ export async function getAllSurveyResponses() {
     });
     const slotIds = opportunity.map(opportunity => opportunity.slots.map(slot => slot.id)).flat();
 
-    const slots = await prisma.slot.findMany({
+    let slots = await prisma.slot.findMany({
         where: {
             id: {
                 in: slotIds
@@ -97,6 +112,21 @@ export async function getAllSurveyResponses() {
             }
         }
     });
+
+    for (const slot of slots) {
+        for (const response of slot.surveyResponses) {
+            const applicationId = response.applicationId;
+            try {
+                await verifyCanViewQuestionnaire(applicationId);
+            } catch (e) {
+                slot.surveyResponses = slot.surveyResponses.filter(r => r.applicationId != applicationId);
+            }
+        }
+        if (slot.surveyResponses.length == 0) {
+            slots = slots.filter(s => s.name != slot.name);
+        }
+    }
+
     const surveyResponses: {
         applicationId: number,
         opportunity?: {
@@ -168,6 +198,26 @@ export async function getSurveyResponsesForProject(projectId: number): Promise<{
         }
     });
 
+    if (!project) return [];
+    for (const opportunity of project.opportunities) {
+        for (const slot of opportunity.slots) {
+            for (const response of slot.surveyResponses) {
+                const applicationId = response.applicationId;
+                try {
+                    await verifyCanViewQuestionnaire(applicationId);
+                } catch (e) {
+                    slot.surveyResponses = slot.surveyResponses.filter(r => r.applicationId != applicationId);
+                }
+            }
+            if (slot.surveyResponses.length == 0) {
+                opportunity.slots = opportunity.slots.filter(s => s.id != slot.id);
+            }
+        }
+        if (opportunity.slots.length == 0) {
+            project.opportunities = project.opportunities.filter(o => o.id != opportunity.id);
+        }
+    }
+
     const surveyResponses: {
         applicationId: number,
         opportunity: {
@@ -225,7 +275,15 @@ export async function getOpportunity(opportunityId: number): Promise<Opportunity
         }
     `
 
-    const queryResponse = await runQuery(query);
+    let queryResponse;
+    try {
+        queryResponse = await runQuery(query);
+    } catch (e) {
+        if (e instanceof Error && e.message == "Response not successful: Received status code 406") {
+            throw new Error("You are not authorized to view this opportunity.");
+        }
+    }
+
     return {
         id: queryResponse.opportunity.id,
         name: queryResponse.opportunity.title,
@@ -303,7 +361,7 @@ export async function getOpportunityAnalysis(opportunityId: number): Promise<Ana
 }
 
 export async function getOpportunities() {
-    const opportunities = await prisma.opportunity.findMany({
+    let opportunities = await prisma.opportunity.findMany({
         select: {
             id: true,
             name: true,
@@ -315,6 +373,7 @@ export async function getOpportunities() {
             },
             slots: {
                 select: {
+                    id: true,
                     surveyResponses: {
                         select: {
                             applicationId: true,
@@ -328,6 +387,25 @@ export async function getOpportunities() {
             id: "desc"
         }
     });
+
+    for (const opportunity of opportunities) {
+        for (const slot of opportunity.slots) {
+            for (const response of slot.surveyResponses) {
+                const applicationId = response.applicationId;
+                try {
+                    await verifyCanViewQuestionnaire(applicationId);
+                } catch (e) {
+                    slot.surveyResponses = slot.surveyResponses.filter(r => r.applicationId != applicationId);
+                }
+            }
+            if (slot.surveyResponses.length == 0) {
+                opportunity.slots = opportunity.slots.filter(s => s.id != slot.id);
+            }
+        }
+        if (opportunity.slots.length == 0) {
+            opportunities = opportunities.filter(o => o.id != opportunity.id);
+        }
+    }
 
     const result: {
         id: number,
@@ -375,7 +453,7 @@ export async function getOpportunities() {
 }
 
 export async function getOpportunitiesOfProject(projectId: number) {
-    const opportunities = await prisma.opportunity.findMany({
+    let opportunities = await prisma.opportunity.findMany({
         where: {
             projectId: projectId
         },
@@ -390,6 +468,7 @@ export async function getOpportunitiesOfProject(projectId: number) {
             },
             slots: {
                 select: {
+                    id: true,
                     surveyResponses: {
                         select: {
                             applicationId: true,
@@ -400,6 +479,25 @@ export async function getOpportunitiesOfProject(projectId: number) {
             }
         }
     });
+
+    for (const opportunity of opportunities) {
+        for (const slot of opportunity.slots) {
+            for (const response of slot.surveyResponses) {
+                const applicationId = response.applicationId;
+                try {
+                    await verifyCanViewQuestionnaire(applicationId);
+                } catch (e) {
+                    slot.surveyResponses = slot.surveyResponses.filter(r => r.applicationId != applicationId);
+                }
+            }
+            if (slot.surveyResponses.length == 0) {
+                opportunity.slots = opportunity.slots.filter(s => s.id != slot.id);
+            }
+        }
+        if (opportunity.slots.length == 0) {
+            opportunities = opportunities.filter(o => o.id != opportunity.id);
+        }
+    }
 
     const result: {
         id: number,

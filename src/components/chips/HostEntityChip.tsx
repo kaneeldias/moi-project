@@ -10,7 +10,21 @@ type Props = {
 export default async function HostEntityChip(props: Props) {
     await waitRandomTime();
 
-    const host = await getHostEntity(props.opportunityId);
+    let host;
+    try {
+        host = await getHostEntity(props.opportunityId);
+    } catch (e) {
+        host = {
+            lc: {
+                id: 0,
+                name: "Unknown"
+            },
+            mc: {
+                id: 0,
+                name: "Unknown"
+            }
+        }
+    }
 
     return (
         <div className={`flex flex-row space-x-0 text-xs`}>

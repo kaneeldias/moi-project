@@ -72,6 +72,10 @@ export async function isAiesecer(): Promise<boolean> {
         }
     `
 
-    const queryResponse = await runQuery(query);
-    return queryResponse.person.is_aiesecer;
+    try {
+        const queryResponse = await runQuery(query);
+        return queryResponse.person.is_aiesecer;
+    } catch (e) {
+        return false;
+    }
 }
