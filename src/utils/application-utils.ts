@@ -1,6 +1,7 @@
 import {gql} from "@apollo/client";
 import {runQuery} from "@/utils/graphql-utils";
 import {forceGetPersonId, getAccessibleEntities, isAiEbMember} from "@/utils/person-utils";
+import {prisma} from "@/utils/prisma-utils";
 
 async function getApplicationOwnerId(applicationId: number): Promise<number> {
     const query = gql`
@@ -18,9 +19,33 @@ async function getApplicationOwnerId(applicationId: number): Promise<number> {
 }
 
 async function getApplicationOffice(applicationId: number): Promise<number> {
+    const application = await prisma.surveyResponse.findUnique({
+        where: {
+            applicationId: applicationId
+        },
+        select: {
+            slot: {
+                select: {
+                    opportunity: {
+                        select: {
+                            officeId: true
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    if (!application) throw new Error("Unable to find application.");
+    const officeId = application.slot.opportunity.officeId;
+    if (officeId != -1) return officeId;
+
     const query = gql`
         {
             getApplication(id: "${applicationId}") {
+                opportunity {
+                    id
+                }
                 host_lc {
                     id
                 }
@@ -29,7 +54,21 @@ async function getApplicationOffice(applicationId: number): Promise<number> {
     `
 
     const queryResponse = await runQuery(query);
-    return queryResponse.getApplication.host_lc.id;
+
+    try {
+        await prisma.opportunity.update({
+            where: {
+                id: parseInt(queryResponse.getApplication.opportunity.id)
+            },
+            data: {
+                officeId: parseInt(queryResponse.getApplication.host_lc.id)
+            }
+        });
+    } catch (e) {
+        console.error("Unable to update opportunity office ID:", e);
+    }
+
+    return parseInt(queryResponse.getApplication.host_lc.id);
 }
 
 

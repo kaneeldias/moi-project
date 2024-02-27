@@ -43,6 +43,7 @@ model Opportunity {
   project       Project         @relation(fields: [projectId], references: [id])
   projectId     Int
   slots         Slot[]
+  officeId      Int             @default(-1)
 }
 
 model Slot {

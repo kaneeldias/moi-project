@@ -36,7 +36,6 @@ export async function runQuery(query: DocumentNode | TypedDocumentNode<any, Oper
     if (!cachedData) console.info("Cache missed");
     else return cachedData;
 
-
     const {data, errors} = await client.query({
         query, variables
     });
@@ -46,7 +45,7 @@ export async function runQuery(query: DocumentNode | TypedDocumentNode<any, Oper
         throw new Error(errors.toString());
     }
 
-    // console.info(data);
+    console.info(data);
     return data;
 }
 

@@ -104,13 +104,13 @@ export async function getAccessibleEntities(): Promise<number[]> {
 
     const queryResponse = await runQuery(query);
     for (const office of queryResponse.currentPerson.current_offices) {
-        officeIds.push(office.id);
+        officeIds.push(parseInt(office.id));
         for (const suboffice of office.suboffices) {
-            officeIds.push(suboffice.id);
+            officeIds.push(parseInt(suboffice.id));
             for (const subsuboffice of suboffice.suboffices) {
-                officeIds.push(subsuboffice.id);
+                officeIds.push(parseInt(subsuboffice.id));
                 for (const subsubsuboffice of subsuboffice.suboffices) {
-                    officeIds.push(subsubsuboffice.id);
+                    officeIds.push(parseInt(subsubsuboffice.id));
                 }
             }
         }

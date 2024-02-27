@@ -51,7 +51,6 @@ async function getProject(projectId: string): Promise<Project> {
         }
     `
 
-
     const queryResponse = await runQuery(query);
 
     const opportunityApplication = queryResponse.getApplication;
