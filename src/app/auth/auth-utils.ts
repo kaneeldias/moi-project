@@ -1,5 +1,7 @@
 import {cookies} from "next/headers";
 import {GetTokenResponse} from "@/app/auth/auth-types";
+import {gql} from "@apollo/client";
+import {runQuery} from "@/utils/graphql-utils";
 
 export function isLoggedIn(): boolean {
     const accessToken = cookies().get("access_token");

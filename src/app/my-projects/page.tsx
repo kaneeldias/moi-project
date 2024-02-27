@@ -18,10 +18,10 @@ export default async function ProjectSelector() {
                 </div>
             </> :
                 <div className={`flex flex-col space-y-2`}>
-                    <div className={`text-lg text-white font-bold`}>
+                    <div className={`text-lg text-gray-700 font-bold`}>
                         You have not yet had a Global Volunteer experience with AIESEC ☹️
                     </div>
-                    <div className={`text-sm text-white font-light`}>
+                    <div className={`text-sm text-gray-700 font-light`}>
                         Please come back again after you have started your experience 😊
                     </div>
                 </div>

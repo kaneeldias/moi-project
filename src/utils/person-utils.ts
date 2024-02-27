@@ -42,7 +42,6 @@ export async function isAiEbMember(): Promise<boolean> {
 
     const queryResponse = await runQuery(query);
     return queryResponse.currentPerson.is_ai_eb_member;
-
 }
 
 export async function forceGetPersonId(accessToken?: string): Promise<number> {
@@ -62,4 +61,17 @@ export async function forceGetPersonId(accessToken?: string): Promise<number> {
     }
 
     return queryResponse.currentPerson.id;
+}
+
+export async function isAiesecer(): Promise<boolean> {
+    const query = gql`
+        {
+            person(id: "${await getPersonId()}") {
+                is_aiesecer
+            }
+        }
+    `
+
+    const queryResponse = await runQuery(query);
+    return queryResponse.person.is_aiesecer;
 }
