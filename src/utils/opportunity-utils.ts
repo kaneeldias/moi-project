@@ -275,14 +275,7 @@ export async function getOpportunity(opportunityId: number): Promise<Opportunity
         }
     `
 
-    let queryResponse;
-    try {
-        queryResponse = await runQuery(query);
-    } catch (e) {
-        if (e instanceof Error && e.message == "Response not successful: Received status code 406") {
-            throw new Error("You are not authorized to view this opportunity.");
-        }
-    }
+    const queryResponse = await runQuery(query);
 
     return {
         id: queryResponse.opportunity.id,
