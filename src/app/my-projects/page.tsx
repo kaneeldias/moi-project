@@ -31,14 +31,14 @@ export default async function ProjectSelector() {
 }
 
 async function getProjects(): Promise<Project[]> {
-    // statuses: ["realized", "finished", "completed"]
     const query = gql`
         {
             personApplications(
                 id: "${await getPersonId()}"
                 filters: {
                     programmes: [7],
-                    for: "people"
+                    for: "people",
+                    statuses: ["realized", "finished", "completed"]
                 }
                 pagination: {
                     per_page: 100,
