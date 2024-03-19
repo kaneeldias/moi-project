@@ -18,7 +18,7 @@ const COLUMNS = [
         name: "Final "
     },
     {
-        name: "+/-"
+        name: "+/- (%)"
     }
 ]
 
@@ -41,7 +41,7 @@ export default async function ProjectAnalysisTable(props: Props) {
 
             getScorecard(analysisRow.totalFinalCount, analysisRow.averageFinalScore),
 
-            getChange(analysisRow.change)
+            getChange(analysisRow.change, analysisRow.averageInitialScore, analysisRow.averageFinalScore)
         ];
     });
 
@@ -69,16 +69,20 @@ function getScorecard(count: number, score: number) {
     )
 }
 
-function getChange(change: number) {
+function getChange(change: number, initial: number, final: number) {
     if (isNaN(change)) {
         return <div className={`text-gray-400`}>-</div>
     }
 
+    const changePercentage = ((final - initial) / initial * 100).toFixed(2);
+
     return (
         <div className={`flex flex-row space-x-2`}>
-            { change < 0 && <div className={`font-bold w-2 text-red-600`}>{change.toFixed(2)}</div> }
-            { change > 0 && <div className={`font-bold w-2 text-green-600`}>+{change.toFixed(2)}</div> }
-            { change == 0 && <div className={`font-bold w-2 text-gray-400`}>-</div> }
+            { change < 0 && <div className={`font-bold w-4 text-red-600`}>{change.toFixed(2)} <span
+                className={'font-light text-[10px]'}>({changePercentage}%)</span></div>}
+            {change > 0 && <div className={`font-bold w-4 text-green-600`}>+{change.toFixed(2)} <span
+                className={'font-light text-[10px]'}>({changePercentage}%)</span></div>}
+            {change == 0 && <div className={`font-bold w-4 text-gray-400`}>-</div> }
         </div>
     )
 }
