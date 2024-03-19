@@ -8,9 +8,9 @@ import ProjectChip from "@/components/chips/ProjectChip";
 import TableSkeleton from "@/components/tables/TableSkeleton";
 
 const COLUMNS = [
-    {
-        name: "ID"
-    },
+    // {
+    //     name: "ID"
+    // },
     {
         name: "Project"
     },
@@ -28,11 +28,11 @@ export default async function Projects() {
     const projects = await getProjects();
     const rows = projects.map((project, index) => {
         return [
-                <Link key={index} href={`/projects/${project.id}`}>
-                    <div className={`bg-gray-300 rounded-sm p-1 px-2 bg-opacity-50 hover:bg-opacity-100 hover:bg-blue-600 hover:text-white font-bold transition-all text-center w-20`}>
-                        {project.id}
-                    </div>
-                </Link>,
+                // <Link key={index} href={`/projects/${project.id}`}>
+                //     <div className={`bg-gray-300 rounded-sm p-1 px-2 bg-opacity-50 hover:bg-opacity-100 hover:bg-blue-600 hover:text-white font-bold transition-all text-center w-20`}>
+                //         {project.id}
+                //     </div>
+                // </Link>,
 
              <ProjectChip key={index} name={project.name} sdg={project.sdg} id={project.id}/>,
 

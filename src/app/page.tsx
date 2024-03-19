@@ -1,5 +1,5 @@
 export default function Home() {
   return (
-    <div>welcome iGV!</div>
+    <div>v0.2.1</div>
   );
 }
