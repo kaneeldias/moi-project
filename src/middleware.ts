@@ -20,6 +20,9 @@ export async function middleware(request: NextRequest) {
             sameSite: "strict"
         });
 
+        response.cookies.delete("access_token");
+        response.cookies.delete("refresh_token");
+
         return response;
     }
 
