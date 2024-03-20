@@ -11,8 +11,8 @@ import {getAccessToken} from "@/app/auth/auth-utils";
 const APOLLO_CLIENTS = new Map();
 
 export async function runQuery(query: DocumentNode | TypedDocumentNode<any, OperationVariables>, variables?: any) {
-    console.info("Running query: ", query.loc?.source.body.toString());
-    console.info("Access token: ", getAccessToken());
+    // console.info("Running query: ", query.loc?.source.body.toString());
+    // console.info("Access token: ", getAccessToken());
 
     let client: ApolloClient<NormalizedCacheObject>;
     if (APOLLO_CLIENTS.has(getAccessToken())) {
@@ -45,7 +45,7 @@ export async function runQuery(query: DocumentNode | TypedDocumentNode<any, Oper
         throw new Error(errors.toString());
     }
 
-    console.info(data);
+    // console.info(data);
     return data;
 }
 

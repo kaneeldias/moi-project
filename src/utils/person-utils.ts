@@ -118,3 +118,46 @@ export async function getAccessibleEntities(): Promise<number[]> {
 
     return [... new Set(officeIds)];
 }
+
+export async function getAccessibleEntitiesWithNames(): Promise<{id: number, name: string}[]> {
+    const officeIds = [];
+
+    const query = gql`
+        {
+            currentPerson {
+                current_offices {
+                    id
+                    name
+                    suboffices {
+                        id
+                        name
+                        suboffices {
+                            id
+                            name
+                            suboffices {
+                                id
+                                name
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    `
+
+    const queryResponse = await runQuery(query);
+    for (const office of queryResponse.currentPerson.current_offices) {
+        officeIds.push({id: parseInt(office.id), name: office.name});
+        for (const suboffice of office.suboffices) {
+            officeIds.push({id: parseInt(suboffice.id), name: suboffice.name});
+            for (const subsuboffice of suboffice.suboffices) {
+                officeIds.push({id: parseInt(subsuboffice.id), name: subsuboffice.name});
+                for (const subsubsuboffice of subsuboffice.suboffices) {
+                    officeIds.push({id: parseInt(subsubsuboffice.id), name: subsubsuboffice.name});
+                }
+            }
+        }
+    }
+
+    return officeIds;
+}

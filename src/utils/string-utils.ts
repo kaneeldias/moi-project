@@ -1,10 +1,29 @@
 import {ReactNode} from "react";
 import {createRoot} from "react-dom/client";
 import {flushSync} from "react-dom";
+import {ReactDOMServerEdge} from "next/dist/server/future/route-modules/app-page/vendored/ssr/entrypoints";
 
 export function nodeToString(node: ReactNode): string {
-    const div = document.createElement("div");
-    const root = createRoot(div);
-    flushSync(() => root.render(node));
-    return div.innerText; // or innerHTML or textContent
+    if (node == null) return ''
+
+    switch (typeof node) {
+        case 'string':
+        case 'number':
+            return node.toString()
+
+        case 'boolean':
+            return ''
+
+        case 'object': {
+            if (node instanceof Array)
+                return node.map(nodeToString).join('')
+
+            if ('props' in node)
+                return nodeToString(node.props.children)
+        } // eslint-ignore-line no-fallthrough
+
+        default:
+            console.warn('Unresolved `node` of type:', typeof node, node)
+            return ''
+    }
 }

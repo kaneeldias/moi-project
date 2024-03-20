@@ -55,36 +55,69 @@ export async function getOpportunityAndProjectFromApplication(applicationId: num
     }
 }
 
-export async function getProjects(): Promise<{
+export async function getProjects(entities?: number[]): Promise<{
     id: number,
     name: string,
     sdg: number,
     opportunityCount: number,
     responsesCount: number
 }[]> {
-    const projects = await prisma.project.findMany({
-        select: {
-            id: true,
-            name: true,
-            sdg: true,
-            opportunities: {
-                select: {
-                    id: true,
-                    slots: {
-                        select: {
-                            id: true,
-                            surveyResponses: {
-                                select: {
-                                    applicationId: true,
-                                    updatedAt: true
+    console.log(entities);
+
+
+    const projects = !entities ?
+        await prisma.project.findMany({
+            select: {
+                id: true,
+                name: true,
+                sdg: true,
+                opportunities: {
+                    select: {
+                        id: true,
+                        slots: {
+                            select: {
+                                id: true,
+                                surveyResponses: {
+                                    select: {
+                                        applicationId: true,
+                                        updatedAt: true
+                                    }
                                 }
                             }
+                        }
+                    },
+                }
+            }
+        })
+        :
+        await prisma.project.findMany({
+            select: {
+                id: true,
+                name: true,
+                sdg: true,
+                opportunities: {
+                    select: {
+                        id: true,
+                        slots: {
+                            select: {
+                                id: true,
+                                surveyResponses: {
+                                    select: {
+                                        applicationId: true,
+                                        updatedAt: true
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    where: {
+                        officeId: {
+                            in: entities
                         }
                     }
                 }
             }
-        }
-    });
+        })
 
     for (const project of projects) {
         for (const opportunity of project.opportunities) {

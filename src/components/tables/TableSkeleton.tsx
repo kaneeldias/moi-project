@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-export default async function TableSkeleton() {
+export default function TableSkeleton() {
     return (
         <div className={`relative`}>
             <Image src={"/icons/search.png"} alt={"search"} className={`absolute top-[22px] left-[20px] grayscale opacity-50 transition-all duration-300`} width={16} height={16}/>

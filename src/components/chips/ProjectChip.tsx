@@ -8,7 +8,7 @@ type Props = {
     sdg: number;
 }
 
-export default async function ProjectChip(props: Props) {
+export default function ProjectChip(props: Props) {
     return (
         <div className={`w-fit`}>
             <Link href={`/projects/${props.id}`}>

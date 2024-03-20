@@ -3,6 +3,27 @@
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
+  <component name="DBNavigator.Project.DatabaseSessionManager">
+    <connection id="292efbf2-5d8a-47d5-86d2-4d287678a602" />
+    <connection id="2a58b40e-8724-4117-b523-f0d6e1b096e8" />
+  </component>
+  <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="2a58b40e-8724-4117-b523-f0d6e1b096e8" dataset="public.Answer" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="292efbf2-5d8a-47d5-86d2-4d287678a602" dataset="public.links" active-filter-id="EMPTY_FILTER" />
+  </component>
+  <component name="DBNavigator.Project.ExecutionManager">
+    <retain-sticky-names value="false" />
+  </component>
+  <component name="DBNavigator.Project.ObjectQuickFilterManager">
+    <last-used-operator value="EQUAL" />
+    <filters />
+  </component>
+  <component name="DBNavigator.Project.ParserDiagnosticsManager">
+    <diagnostics-history />
+  </component>
+  <component name="DBNavigator.Project.ScriptExecutionManager" clear-outputs="true">
+    <recently-used-interfaces />
+  </component>
   <component name="DBNavigator.Project.Settings">
     <connections />
     <browser-settings>
