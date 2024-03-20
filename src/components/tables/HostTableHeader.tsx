@@ -1,6 +1,6 @@
 import React from "react";
 
-export default async function HostTableHeader() {
+export default function HostTableHeader() {
     return (
         <div className={`flex flex-row space-x-0 text-xs items-center`}>
             <div className={`text-sm mr-2`}>Host</div>

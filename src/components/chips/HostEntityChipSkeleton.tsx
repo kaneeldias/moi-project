@@ -1,6 +1,6 @@
 import React from "react";
 
-export default async function HostEntityChipSkeleton() {
+export default function HostEntityChipSkeleton() {
     return (
         <div className={`flex flex-row space-x-0 animate-pulse`}>
             <div>

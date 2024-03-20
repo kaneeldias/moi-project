@@ -1,7 +1,19 @@
 import {gql} from "@apollo/client";
 import {runQuery} from "@/utils/graphql-utils";
 
-export async function getLCs(entity: number): Promise<number[]> {
+export async function getChildLCs(entities: number[]): Promise<number[]> {
+    const LCs = [];
+
+    for (const entity of entities) {
+        const children = await getLCs(entity);
+        LCs.push(...children);
+    }
+
+    return LCs;
+}
+
+
+async function getLCs(entity: number): Promise<number[]> {
     const query = gql`
     {
         committee(id: "${entity}") {

@@ -92,7 +92,7 @@ export default function Table(props: Props) {
                 </div>
 
                 { props.entities  && props.selectedEntities && props.setSelectedEntities &&
-                    <div className={`w-96`}>
+                    <div className={`w-96 h-3`}>
                         <EntitySearchComponent entities={props.entities} selectedEntities={props.selectedEntities} setSelectedEntities={props.setSelectedEntities}/>
                     </div>
                 }

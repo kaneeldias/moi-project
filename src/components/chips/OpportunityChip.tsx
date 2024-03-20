@@ -8,7 +8,7 @@ type Props = {
     sdg: number;
 }
 
-export default async function OpportunityChip(props: Props) {
+export default function OpportunityChip(props: Props) {
     return (
         <div className={`w-fit`}>
             <Link href={`/opportunities/${props.id}`}>

@@ -1,13 +1,15 @@
 import {NextRequest, NextResponse} from "next/server";
-import {getProjects} from "@/utils/project-utils";
 import {waitRandomTime} from "@/utils/test-utils";
 import {getChildLCs} from "@/utils/office-utils";
+import {getOpportunitiesOfProject} from "@/utils/opportunity-utils";
 
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest, { params }: {params: {projectId: string}}) {
     await waitRandomTime();
 
+    const projectId = parseInt(params.projectId);
+
     if (!request.nextUrl.searchParams.has('entities')) {
-        const projects = await getProjects();
+        const projects = await getOpportunitiesOfProject(projectId);
         return NextResponse.json(projects);
     }
 
@@ -16,6 +18,7 @@ export async function GET(request: NextRequest) {
     });
 
     const childLCs = await getChildLCs(entities);
-    const projects = await getProjects(childLCs);
+    const projects = await getOpportunitiesOfProject(projectId, childLCs);
     return NextResponse.json(projects);
 }
+
