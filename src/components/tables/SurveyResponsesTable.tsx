@@ -1,6 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import {getAllSurveyResponses, getSurveyResponses} from "@/utils/opportunity-utils";
-import React, {Suspense} from "react";
+import React, {Suspense, useEffect, useState} from "react";
 import {formatDateToDateTime} from "@/utils/datetime-utils";
 import Table from "@/components/tables/Table";
 import {waitRandomTime} from "@/utils/test-utils";
@@ -10,14 +12,13 @@ import ApplicationOwnerChip from "@/components/chips/ApplicationOwnerChip";
 import OpportunityChip from "@/components/chips/OpportunityChip";
 import HostEntityChip from "@/components/chips/HostEntityChip";
 import HostTableHeader from "@/components/tables/HostTableHeader";
+import TableSkeleton from "@/components/tables/TableSkeleton";
 
 type Props = {
     opportunityId?: number;
 }
 
-export default async function SurveyResponsesTable(props: Props) {
-    await waitRandomTime();
-
+export default function SurveyResponsesTable(props: Props) {
     const COLUMNS: {
         name: string | React.ReactNode;
     }[] = [
@@ -35,7 +36,7 @@ export default async function SurveyResponsesTable(props: Props) {
         }
     ]
 
-    let surveyResponses: {
+    const [surveyResponses, setSurveyResponses] = React.useState<{
         applicationId: number;
         opportunity?: {
             id: number;
@@ -44,36 +45,71 @@ export default async function SurveyResponsesTable(props: Props) {
         }
         slotName: string;
         updatedAt: Date;
-    }[] = [];
-    if (props.opportunityId) {
-        surveyResponses = await getSurveyResponses(props.opportunityId);
-    } else {
-        surveyResponses = await getAllSurveyResponses();
-    }
-    const rows = surveyResponses.map((response, index) => {
-        return [
-            <Link key={index} href={`/questionnaire/${response.applicationId}`}>
-                <div className={`bg-gray-300 rounded-sm p-1 px-2 bg-opacity-50 hover:bg-opacity-100 hover:bg-blue-600 hover:text-white font-bold transition-all text-center w-20`}>
-                    {response.applicationId}
-                </div>
-            </Link>,
+    }[]>([]);
+    const [entities, setEntities] = useState<{id: number, name: string}[]>([]);
+    const [selectedEntities, setSelectedEntities] = useState<{ id: number, name: string}[]>([]);
+    const [rows, setRows] = useState<React.ReactNode[][]>([]);
+    const [loading, setLoading] = useState(true);
 
-            <Suspense key={index} fallback={<ApplicationOwnerChipSkeleton/>}>
-                <ApplicationOwnerChip applicationId={response.applicationId}/>
-            </Suspense>,
+    useEffect(() => {
+        setLoading(true);
+        let url = props.opportunityId ? `/api/opportunities/${props.opportunityId}/survey-responses` : `/api/survey-responses`;
+        url = selectedEntities.length === 0 ? url : `${url}?entities=${selectedEntities.map(entity => entity.id).join(",")}`;
 
-            response.slotName,
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(
+            response => response.json()
+        ).then(json => {
+            setSurveyResponses(json);
+        }).finally(() => {
+            setLoading(false);
+        });
+    }, [selectedEntities]);
 
-            formatDateToDateTime(response.updatedAt)
-        ];
-    });
+    useEffect(() => {
+        fetch(`/api/entities`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then(
+            response => response.json()
+        ).then(json => {
+            setEntities(json);
+        });
+    }, [selectedEntities]);
+
+    useEffect(() => {
+        setRows(surveyResponses.map((response, index) => {
+            return [
+                <Link key={index} href={`/questionnaire/${response.applicationId}`}>
+                    <div className={`bg-gray-300 rounded-sm p-1 px-2 bg-opacity-50 hover:bg-opacity-100 hover:bg-blue-600 hover:text-white font-bold transition-all text-center w-20`}>
+                        {response.applicationId}
+                    </div>
+                </Link>,
+
+                <ApplicationOwnerChip applicationId={response.applicationId}/>,
+
+                response.slotName,
+
+                formatDateToDateTime(response.updatedAt)
+            ];
+        }));
+    }, [surveyResponses]);
+
 
     if (!props.opportunityId) {
         COLUMNS.splice(2, 0, {name: "Opportunity"});
         COLUMNS.splice(3, 0, {name: <HostTableHeader/>});
         
         rows.forEach((row, index) => {
-            const opportunity = surveyResponses[index].opportunity!;
+            const surveyResponse = surveyResponses[index];
+            if (!surveyResponse) return;
+            const opportunity = surveyResponse.opportunity!;
             row.splice(2, 0, <OpportunityChip id={opportunity.id} name={opportunity.name} sdg={opportunity.sdg}/>);
             row.splice(3, 0, <HostEntityChip opportunityId={opportunity.id}/>);
         });
@@ -83,8 +119,15 @@ export default async function SurveyResponsesTable(props: Props) {
         <div className={`p-1 rounded-md bg-white h-fit w-full md:w-[800px] shadow-md`}>
 
             <CardTitle title={`Survey Responses`}/>
-            <Table columns={COLUMNS} rows={rows}/>
-
+            { loading ?
+                <TableSkeleton/> :
+                <>
+                    { props.opportunityId ?
+                        <Table columns={COLUMNS} rows={rows}/>:
+                        <Table columns={COLUMNS} rows={rows} entities={entities} selectedEntities={selectedEntities} setSelectedEntities={setSelectedEntities}/>
+                    }
+                </>
+            }
         </div>
 
     );

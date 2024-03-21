@@ -72,16 +72,33 @@ export async function getSurveyResponses(opportunityId: number) {
     return surveyResponses;
 }
 
-export async function getAllSurveyResponses() {
-    const opportunity = await prisma.opportunity.findMany({
-        select: {
-            slots: {
-                select: {
-                    id: true
+export async function getAllSurveyResponses(entities?: number[]) {
+    const opportunity = entities ?
+        await prisma.opportunity.findMany({
+            select: {
+                slots: {
+                    select: {
+                        id: true
+                    }
+                }
+            },
+            where: {
+                officeId: {
+                    in: entities
                 }
             }
-        }
-    });
+        })
+        :
+        await prisma.opportunity.findMany({
+            select: {
+                slots: {
+                    select: {
+                        id: true
+                    }
+                }
+            }
+        });
+
     const slotIds = opportunity.map(opportunity => opportunity.slots.map(slot => slot.id)).flat();
 
     let slots = await prisma.slot.findMany({
