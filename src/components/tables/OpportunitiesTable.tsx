@@ -9,6 +9,7 @@ import HostEntityChipSkeleton from "@/components/chips/HostEntityChipSkeleton";
 import HostTableHeader from "@/components/tables/HostTableHeader";
 import TableSkeleton from "@/components/tables/TableSkeleton";
 import HostEntityChip from "@/components/chips/HostEntityChip";
+import LocationText from "@/components/LocationText";
 
 const COLUMNS = [
     {
@@ -47,21 +48,6 @@ export default function OpportunitiesTable(props: Props) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const url = props.projectId ? `/api/projects/${props.projectId}/opportunities` : `/api/opportunities`;
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            }).then(
-                response => response.json()
-            ).then(json => {
-                setOpportunities(json);
-                setLoading(false);
-            })
-    }, []);
-
-    useEffect(() => {
         fetch(`/api/entities`, {
             method: 'GET',
             headers: {
@@ -85,13 +71,9 @@ export default function OpportunitiesTable(props: Props) {
 
                 <OpportunityChip key={index} id={opportunity.id} name={opportunity.name} sdg={opportunity.project.sdg}/>,
 
-                <Suspense key={index} fallback={<HostEntityChipSkeleton/>}>
-                    <HostEntityChip opportunityId={opportunity.id}/>
-                </Suspense>,
+                <HostEntityChip opportunityId={opportunity.id}/>,
 
-                <Suspense key={index} fallback={<div className={`flex h-2.5 flex-row space-x-1 items-center bg-gray-400 rounded-full dark:bg-gray p-1 px-2 w-28`}/>}>
-                    {/*<LocationText opportunityId={opportunity.id}/>*/}
-                </Suspense>,
+                <LocationText opportunityId={opportunity.id}/>,
 
                 <div key={index}>{opportunity.responsesCount}</div>
             ];

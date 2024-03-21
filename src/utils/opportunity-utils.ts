@@ -157,7 +157,7 @@ export async function getAllSurveyResponses() {
 }
 
 
-export async function getSurveyResponsesForProject(projectId: number): Promise<{
+export async function getSurveyResponsesForProject(projectId: number, entities?: number[]): Promise<{
     applicationId: number,
     opportunity: {
         id: number,
@@ -171,32 +171,65 @@ export async function getSurveyResponsesForProject(projectId: number): Promise<{
     },
     updatedAt: Date
 }[]> {
-    const project = await prisma.project.findUnique({
-        where: {
-            id: projectId
-        },
-        select: {
-            sdg: true,
-            opportunities: {
-                select: {
-                    id: true,
-                    name: true,
-                    slots: {
-                        select: {
-                            id: true,
-                            name: true,
-                            surveyResponses: {
-                                select: {
-                                    applicationId: true,
-                                    updatedAt: true
+    const project = !entities ?
+        await prisma.project.findUnique({
+            where: {
+                id: projectId
+            },
+            select: {
+                sdg: true,
+                opportunities: {
+                    select: {
+                        id: true,
+                        name: true,
+                        slots: {
+                            select: {
+                                id: true,
+                                name: true,
+                                surveyResponses: {
+                                    select: {
+                                        applicationId: true,
+                                        updatedAt: true
+                                    }
                                 }
                             }
+                        }
+                    },
+
+                }
+            }
+        }):
+        await prisma.project.findUnique({
+            where: {
+                id: projectId
+            },
+            select: {
+                sdg: true,
+                opportunities: {
+                    select: {
+                        id: true,
+                        name: true,
+                        slots: {
+                            select: {
+                                id: true,
+                                name: true,
+                                surveyResponses: {
+                                    select: {
+                                        applicationId: true,
+                                        updatedAt: true
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    where: {
+                        officeId: {
+                            in: entities
                         }
                     }
                 }
             }
-        }
-    });
+        });
 
     if (!project) return [];
     for (const opportunity of project.opportunities) {

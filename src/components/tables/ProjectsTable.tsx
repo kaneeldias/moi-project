@@ -32,20 +32,6 @@ export default function Projects() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`/api/projects`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        }).then(
-            response => response.json()
-        ).then(json => {
-            setProjects(json);
-            setLoading(false);
-        });
-    }, []);
-
-    useEffect(() => {
         fetch(`/api/entities`, {
             method: 'GET',
             headers: {
