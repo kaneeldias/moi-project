@@ -80,7 +80,7 @@ export async function getFullSurveyResponses(opportunityId: number): Promise<{
     return surveyResponses!;
 }
 
-export async function getFullSurveyResponsesForProject(projectId: number): Promise<{
+export async function getFullSurveyResponsesForProject(projectId: number, entities?: number[]): Promise<{
     initialCount: number;
     finalCount: number;
     answers: {
@@ -89,37 +89,79 @@ export async function getFullSurveyResponsesForProject(projectId: number): Promi
         answer: number;
     }[]
 }[]> {
-    const project = await prisma.project.findUnique({
-        where: {
-            id: projectId
-        },
-        select: {
-            opportunities: {
-                select: {
-                    id: true,
-                    slots: {
-                        select: {
-                            id: true,
-                            surveyResponses: {
-                                select: {
-                                    applicationId: true,
-                                    initialCount: true,
-                                    finalCount: true,
-                                    answers: {
-                                        select: {
-                                            questionId: true,
-                                            type: true,
-                                            answer: true
+    const project = entities ?
+        await prisma.project.findUnique({
+            where: {
+                id: projectId
+            },
+            select: {
+                opportunities: {
+                    select: {
+                        id: true,
+                        slots: {
+                            select: {
+                                id: true,
+                                surveyResponses: {
+                                    select: {
+                                        applicationId: true,
+                                        initialCount: true,
+                                        finalCount: true,
+                                        answers: {
+                                            select: {
+                                                questionId: true,
+                                                type: true,
+                                                answer: true
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
+                    },
+                    where: {
+                        officeId: {
+                            in: entities
+                        }
                     }
                 }
             }
-        }
-    });
+        }):
+        await prisma.project.findUnique({
+            where: {
+                id: projectId
+            },
+            select: {
+                opportunities: {
+                    select: {
+                        id: true,
+                        slots: {
+                            select: {
+                                id: true,
+                                surveyResponses: {
+                                    select: {
+                                        applicationId: true,
+                                        initialCount: true,
+                                        finalCount: true,
+                                        answers: {
+                                            select: {
+                                                questionId: true,
+                                                type: true,
+                                                answer: true
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    where: {
+                        officeId: {
+                            in: entities
+                        }
+                    }
+                }
+            }
+        });
 
     if (!project) return [];
     for (const opportunity of project.opportunities) {

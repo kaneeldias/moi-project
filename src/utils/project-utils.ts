@@ -198,7 +198,7 @@ export async function getProject(projectId: number): Promise<{
     }
 }
 
-export async function getProjectAnalysis(projectId: number): Promise<AnalysisRow[]> {
+export async function getProjectAnalysis(projectId: number, entities?: number[]): Promise<AnalysisRow[]> {
     const project = await getProject(projectId);
     const opportunityName = project.name;
     const questions: QuestionStructure[] = await getQuestions(opportunityName);
@@ -220,7 +220,7 @@ export async function getProjectAnalysis(projectId: number): Promise<AnalysisRow
         };
     }
 
-    const surveyResponses = await getFullSurveyResponsesForProject(projectId);
+    const surveyResponses = await getFullSurveyResponsesForProject(projectId, entities);
     for (const response of surveyResponses) {
         for (const answer of response.answers) {
             if (!analysis[answer.questionId]) continue;

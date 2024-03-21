@@ -386,33 +386,66 @@ export async function getOpportunityAnalysis(opportunityId: number): Promise<Ana
     return analysisRows;
 }
 
-export async function getOpportunities() {
-    let opportunities = await prisma.opportunity.findMany({
-        select: {
-            id: true,
-            name: true,
-            project: {
-                select: {
-                    id: true,
-                    sdg: true
-                }
-            },
-            slots: {
-                select: {
-                    id: true,
-                    surveyResponses: {
-                        select: {
-                            applicationId: true,
-                            updatedAt: true
+export async function getOpportunities(entities?: number[]) {
+    let opportunities = !entities ?
+        await prisma.opportunity.findMany({
+            select: {
+                id: true,
+                name: true,
+                project: {
+                    select: {
+                        id: true,
+                        sdg: true
+                    }
+                },
+                slots: {
+                    select: {
+                        id: true,
+                        surveyResponses: {
+                            select: {
+                                applicationId: true,
+                                updatedAt: true
+                            }
                         }
                     }
                 }
+            },
+            orderBy: {
+                id: "desc"
             }
-        },
-        orderBy: {
-            id: "desc"
-        }
-    });
+        })
+        :
+        await prisma.opportunity.findMany({
+            where: {
+                officeId: {
+                    in: entities
+                }
+            },
+            select: {
+                id: true,
+                name: true,
+                project: {
+                    select: {
+                        id: true,
+                        sdg: true
+                    }
+                },
+                slots: {
+                    select: {
+                        id: true,
+                        surveyResponses: {
+                            select: {
+                                applicationId: true,
+                                updatedAt: true
+                            }
+                        }
+                    }
+                }
+            },
+            orderBy: {
+                id: "desc"
+            }
+        });
 
     for (const opportunity of opportunities) {
         for (const slot of opportunity.slots) {
