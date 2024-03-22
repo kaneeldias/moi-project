@@ -25,7 +25,7 @@ export async function getQuestions(project: string):  Promise<QuestionStructure[
     return await JSON.parse(questions);
 }
 
-export async function getFullSurveyResponses(opportunityId: number): Promise<{
+export async function getFullSurveyResponses(opportunityId: number, slots?: number[]): Promise<{
     initialCount: number;
     finalCount: number;
     answers: {
@@ -34,32 +34,64 @@ export async function getFullSurveyResponses(opportunityId: number): Promise<{
         answer: number;
     }[]
 }[]> {
-    const opportunity = await prisma.opportunity.findUnique({
-        where: {
-            id: opportunityId
-        },
-        select: {
-            slots: {
-                select: {
-                    id: true,
-                    surveyResponses: {
-                        select: {
-                            applicationId: true,
-                            initialCount: true,
-                            finalCount: true,
-                            answers: {
-                                select: {
-                                    questionId: true,
-                                    type: true,
-                                    answer: true
+    const opportunity = !slots ?
+        await prisma.opportunity.findUnique({
+            where: {
+                id: opportunityId
+            },
+            select: {
+                slots: {
+                    select: {
+                        id: true,
+                        surveyResponses: {
+                            select: {
+                                applicationId: true,
+                                initialCount: true,
+                                finalCount: true,
+                                answers: {
+                                    select: {
+                                        questionId: true,
+                                        type: true,
+                                        answer: true
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-        }
-    });
+        }):
+        await prisma.opportunity.findUnique({
+            where: {
+                id: opportunityId
+            },
+            select: {
+                slots: {
+                    select: {
+                        id: true,
+                        surveyResponses: {
+                            select: {
+                                applicationId: true,
+                                initialCount: true,
+                                finalCount: true,
+                                answers: {
+                                    select: {
+                                        questionId: true,
+                                        type: true,
+                                        answer: true
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    where: {
+                        id: {
+                            in: slots
+                        }
+                    }
+                }
+            }
+        });
 
     if (!opportunity) return [];
     for (const slot of opportunity.slots) {

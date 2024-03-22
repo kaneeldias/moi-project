@@ -4,10 +4,15 @@ import Image from "next/image";
 export default function TableSkeleton() {
     return (
         <div className={`relative`}>
-            <Image src={"/icons/search.png"} alt={"search"} className={`absolute top-[22px] left-[20px] grayscale opacity-50 transition-all duration-300`} width={16} height={16}/>
+            {/*<Image src={"/icons/search.png"} alt={"search"} className={`absolute top-[22px] left-[20px] grayscale opacity-50 transition-all duration-300`} width={16} height={16}/>*/}
+            {/*<input type="text"*/}
+            {/*       className="w-48 border-2 border-gray-200 p-2 m-3 text-xs rounded-sm hover:border-blue-200 focus:border-blue-700 transition-all outline-none"*/}
+            {/*/>*/}
+
             <input type="text"
-                   className="w-48 border-2 border-gray-200 p-2 m-3 text-xs rounded-sm hover:border-blue-200 focus:border-blue-700 transition-all outline-none"
+                   className="w-96 border-2 border-gray-200 p-2 m-3 text-xs rounded-sm hover:border-blue-200 focus:border-blue-700 transition-all outline-none"
             />
+
             <table className="w-full min-w-max table-auto text-left">
                 <thead>
                 <tr>

@@ -1,14 +1,14 @@
 import {NextRequest, NextResponse} from "next/server";
 import {waitRandomTime} from "@/utils/test-utils";
-import {getSurveyResponses, getSurveyResponsesForProject} from "@/utils/opportunity-utils";
-import {getChildLCs} from "@/utils/office-utils";
+import {getOpportunityAnalysis} from "@/utils/opportunity-utils";
 
 export async function GET(request: NextRequest, { params }: {params: {opportunityId: string}}) {
     await waitRandomTime();
 
     const opportunityId = parseInt(params.opportunityId);
+
     if (!request.nextUrl.searchParams.has('slots')) {
-        const projects = await getSurveyResponses(opportunityId);
+        const projects = await getOpportunityAnalysis(opportunityId);
         return NextResponse.json(projects);
     }
 
@@ -16,6 +16,7 @@ export async function GET(request: NextRequest, { params }: {params: {opportunit
         return parseInt(slot);
     });
 
-    const projects = await getSurveyResponses(opportunityId, slots);
+    const projects = await getOpportunityAnalysis(opportunityId, slots);
     return NextResponse.json(projects);
 }
+

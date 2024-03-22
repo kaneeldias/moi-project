@@ -16,6 +16,10 @@ type Props = {
 }
 
 export function EntitySearchComponent(props: Props) {
+    props.entities.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+    });
+
     function handleChange(event: any) {
         if (event === null) {
             props.setSelectedEntities([]);

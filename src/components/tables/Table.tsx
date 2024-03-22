@@ -40,17 +40,15 @@ export default function Table(props: Props) {
     const [validRows, setValidRows] = useState<ReactNode[][]>(rows);
     const [displayedRows, setDisplayedRows] = useState<ReactNode[][]>(rows);
     const [searchActive, setSearchActive] = useState(false);
-    const [pagination, setPagination] = useState(props.pagination ? props.pagination : {page: 1, perPage: 15});
+    const [pagination, setPagination] = useState(
+        props.pagination ?
+            props.pagination :
+            showPagination ?
+                {page: 1, perPage: 15} :
+                {page: 1, perPage: 99999}
+    );
 
     useEffect(() => {
-        if (!showPagination) {
-            setPagination({
-                page: 1,
-                perPage: 9999999
-            });
-            return;
-        }
-
         setDisplayedRows(validRows.slice((pagination.page - 1) * pagination.perPage, pagination.page * pagination.perPage));
     }, [validRows, pagination]);
 
@@ -83,13 +81,13 @@ export default function Table(props: Props) {
 
     return (
         <div className={`transition-all overflow-x-scroll md:overflow-x-hidden relative md:min-h-[500px]`}>
-            <div className={`flex flex-row space-x-5 m-3`}>
-                <div>
-                    <Image src={"/icons/search.png"} alt={"search"} className={`absolute top-[22px] left-[20px] ${!searchActive ? "grayscale opacity-50" : ""} transition-all duration-300`} width={16} height={16}/>
-                    <input name="search" type="text" placeholder={"Quick search"}
-                           className="w-48 border-2 border-gray-200 p-2 pl-8 text-xs rounded-sm hover:border-blue-200 focus:border-blue-500 transition-all outline-none text-gray-600 focus:text-gray-800"
-                           value={search} onChange={handleSearch} onFocus={() => setSearchActive(true)} onBlur={() => setSearchActive(false)}/>
-                </div>
+            <div className={`flex flex-row space-x-5 m-3 mb-10 ml-4`}>
+                {/*<div>*/}
+                {/*    <Image src={"/icons/search.png"} alt={"search"} className={`absolute top-[22px] left-[20px] ${!searchActive ? "grayscale opacity-50" : ""} transition-all duration-300`} width={16} height={16}/>*/}
+                {/*    <input name="search" type="text" placeholder={"Quick search"}*/}
+                {/*           className="w-48 border-2 border-gray-200 p-2 pl-8 text-xs rounded-sm hover:border-blue-200 focus:border-blue-500 transition-all outline-none text-gray-600 focus:text-gray-800"*/}
+                {/*           value={search} onChange={handleSearch} onFocus={() => setSearchActive(true)} onBlur={() => setSearchActive(false)}/>*/}
+                {/*</div>*/}
 
                 { props.entities  && props.selectedEntities && props.setSelectedEntities &&
                     <div className={`w-96 h-3`}>

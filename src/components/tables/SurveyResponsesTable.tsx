@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import {getAllSurveyResponses, getSurveyResponses} from "@/utils/opportunity-utils";
 import React, {Suspense, useEffect, useState} from "react";
 import {formatDateToDateTime} from "@/utils/datetime-utils";
 import Table from "@/components/tables/Table";
@@ -54,7 +53,8 @@ export default function SurveyResponsesTable(props: Props) {
     useEffect(() => {
         setLoading(true);
         let url = props.opportunityId ? `/api/opportunities/${props.opportunityId}/survey-responses` : `/api/survey-responses`;
-        url = selectedEntities.length === 0 ? url : `${url}?entities=${selectedEntities.map(entity => entity.id).join(",")}`;
+        const filterType = props.opportunityId ? "slots" : "entities";
+        url = selectedEntities.length === 0 ? url : `${url}?${filterType}=${selectedEntities.map(entity => entity.id).join(",")}`;
 
         fetch(url, {
             method: 'GET',
@@ -71,7 +71,9 @@ export default function SurveyResponsesTable(props: Props) {
     }, [selectedEntities]);
 
     useEffect(() => {
-        fetch(`/api/entities`, {
+        const url = props.opportunityId ? `/api/opportunities/${props.opportunityId}/slots` : `/api/entities`;
+
+        fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -121,12 +123,7 @@ export default function SurveyResponsesTable(props: Props) {
             <CardTitle title={`Survey Responses`}/>
             { loading ?
                 <TableSkeleton/> :
-                <>
-                    { props.opportunityId ?
-                        <Table columns={COLUMNS} rows={rows}/>:
-                        <Table columns={COLUMNS} rows={rows} entities={entities} selectedEntities={selectedEntities} setSelectedEntities={setSelectedEntities}/>
-                    }
-                </>
+                <Table columns={COLUMNS} rows={rows} entities={entities} selectedEntities={selectedEntities} setSelectedEntities={setSelectedEntities}/>
             }
         </div>
 

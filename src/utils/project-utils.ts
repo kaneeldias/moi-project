@@ -62,9 +62,6 @@ export async function getProjects(entities?: number[]): Promise<{
     opportunityCount: number,
     responsesCount: number
 }[]> {
-    console.log(entities);
-
-
     const projects = !entities ?
         await prisma.project.findMany({
             select: {

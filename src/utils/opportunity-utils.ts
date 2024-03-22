@@ -7,7 +7,7 @@ import {getFullSurveyResponses, getQuestions} from "@/utils/questionnaire-utils"
 import {AnalysisRow, QuestionStructure} from "@/types/question-types";
 import {verifyCanViewQuestionnaire} from "@/utils/application-utils";
 
-export async function getSurveyResponses(opportunityId: number) {
+export async function getSurveyResponses(opportunityId: number, filterSlots?: number[]) {
     const opportunity = await prisma.opportunity.findUnique({
         where: {
             id: opportunityId
@@ -20,7 +20,7 @@ export async function getSurveyResponses(opportunityId: number) {
             }
         }
     });
-    const slotIds = opportunity?.slots.map(slot => slot.id);
+    const slotIds = filterSlots ? filterSlots : opportunity?.slots.map(slot => slot.id);
 
     let slots = await prisma.slot.findMany({
         where: {
@@ -335,7 +335,7 @@ export async function getOpportunity(opportunityId: number): Promise<Opportunity
     };
 }
 
-export async function getOpportunityAnalysis(opportunityId: number): Promise<AnalysisRow[]> {
+export async function getOpportunityAnalysis(opportunityId: number, slots?: number[]): Promise<AnalysisRow[]> {
     const opportunity = await getOpportunity(opportunityId);
     const opportunityName = opportunity.name;
     const questions: QuestionStructure[] = await getQuestions(opportunityName);
@@ -357,7 +357,7 @@ export async function getOpportunityAnalysis(opportunityId: number): Promise<Ana
         };
     }
 
-    const surveyResponses = await getFullSurveyResponses(opportunityId);
+    const surveyResponses = await getFullSurveyResponses(opportunityId, slots);
     for (const response of surveyResponses) {
         for (const answer of response.answers) {
             if (!analysis[answer.questionId]) continue;
@@ -693,4 +693,28 @@ export async function getLocation(opportunityId: number) {
 
     const queryResponse = await runQuery(query);
     return queryResponse.opportunity.location;
+}
+
+export async function getSlots(opportunityId: number): Promise<{id: number, name: string}[]> {
+    const query = gql`
+        {
+            opportunity(id: "${opportunityId}") {
+                id
+                title
+                slots {
+                    id
+                    title
+                }
+            }
+        }
+    `
+
+
+    const queryResponse = await runQuery(query);
+    return queryResponse.opportunity.slots.map((slot: {id: number, title: string}) => {
+        return {
+            id: slot.id,
+            name: slot.title
+        };
+    });
 }
