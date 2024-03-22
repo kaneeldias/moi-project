@@ -144,7 +144,7 @@ export default function QuestionnaireInner(props: Props) {
             {submissionLoading &&
                 <div
                     className={`flex flex-row items-center justify-center fixed top-0 left-0 w-full h-full bg-white bg-opacity-75 rounded-md`}>
-                    <Spinner color={"blue"} className={`w-32 h-32`}/>
+                    <Spinner color={"blue"} className={`w-32 h-32`} onPointerEnterCapture={() => {}} onPointerLeaveCapture={() => {}}/>
                 </div>
             }
 
