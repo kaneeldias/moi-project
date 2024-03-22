@@ -44,7 +44,7 @@ export default function ApplicationOwnerChip(props: Props) {
         <div>
             {loading ?
                 <ApplicationOwnerChipSkeleton/> :
-                <Link href={`${process.env.EXPA_URL}/people/${owner.id}`} target={"_blank"}>
+                <Link href={`${process.env.NEXT_PUBLIC_EXPA_URL}/people/${owner.id}`} target={"_blank"}>
                     <div className={`flex flex-row space-x-1 items-center`}>
                         <Image src={owner.photo} alt={`${owner.name}'s photo`} width={20} height={20} className={"rounded-full"}/>
                         <div>
