@@ -71,9 +71,9 @@ export default function OpportunitiesTable(props: Props) {
 
                 <OpportunityChip key={index} id={opportunity.id} name={opportunity.name} sdg={opportunity.project.sdg}/>,
 
-                <HostEntityChip opportunityId={opportunity.id}/>,
+                <HostEntityChip key={index} opportunityId={opportunity.id}/>,
 
-                <LocationText opportunityId={opportunity.id}/>,
+                <LocationText key={index} opportunityId={opportunity.id}/>,
 
                 <div key={index}>{opportunity.responsesCount}</div>
             ];

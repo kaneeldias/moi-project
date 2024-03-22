@@ -68,11 +68,11 @@ export default function ProjectSurveyResponsesTable(props: Props) {
                     </div>
                 </Link>,
 
-                <ApplicationOwnerChip applicationId={response.applicationId}/>,
+                <ApplicationOwnerChip key={index} applicationId={response.applicationId}/>,
 
                 <OpportunityChip key={index} id={response.opportunity.id} name={response.opportunity.name} sdg={response.opportunity.project.sdg}/>,
 
-                <HostEntityChip opportunityId={response.opportunity.id}/>,
+                <HostEntityChip key={index} opportunityId={response.opportunity.id}/>,
 
                 response.slot.name,
 

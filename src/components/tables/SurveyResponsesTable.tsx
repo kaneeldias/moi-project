@@ -92,7 +92,7 @@ export default function SurveyResponsesTable(props: Props) {
                     </div>
                 </Link>,
 
-                <ApplicationOwnerChip applicationId={response.applicationId}/>,
+                <ApplicationOwnerChip key={index} applicationId={response.applicationId}/>,
 
                 response.slotName,
 
