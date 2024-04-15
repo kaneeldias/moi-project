@@ -3,7 +3,17 @@ import {gql} from "@apollo/client";
 import {runQuery, runQueryWithAccessToken} from "@/utils/graphql-utils";
 
 const WHITELISTED_ENTITIES = [
-    1623 // Sri Lanka
+    1623, // Sri Lanka
+    459, // Benin
+    1593, // Bolivia,
+    1606, // Brazil,
+    1551, // Colombia,
+    577, // Costa Rica,
+    1609, // Egypt
+    1585, // India,
+    1544, // Portugal,
+    1560, // Romania,
+    1559 // Tunisia
 ]
 
 export function isPersonIdPresent(): boolean {
