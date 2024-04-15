@@ -159,5 +159,10 @@ export async function getAccessibleEntitiesWithNames(): Promise<{id: number, nam
         }
     }
 
-    return officeIds;
+    //remove duplicate office IDs
+    return officeIds.filter((office, index, self) =>
+        index === self.findIndex((t) => (
+            t.id === office.id
+        ))
+    );
 }
