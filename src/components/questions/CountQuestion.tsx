@@ -7,6 +7,7 @@ type Props = {
     children: React.ReactNode;
     answer: Answer;
     setAnswer: (answer: Answer) => void;
+    finalSectionEnabled: boolean;
 }
 
 export default function CountQuestion(props: Props) {
@@ -28,7 +29,7 @@ export default function CountQuestion(props: Props) {
     const countInputs: React.ReactNode = (
         <div className={'flex flex-row space-x-5'}>
             <CountInput label={`Initial survey`} value={props.answer.initial} setValue={updateInitial}/>
-            <CountInput label={`Final survey`} value={props.answer.final} setValue={updateFinal}/>
+            <CountInput label={`Final survey`} value={props.answer.final} setValue={updateFinal} disabled={!props.finalSectionEnabled}/>
         </div>
     );
 

@@ -16,7 +16,8 @@ type Props = {
     projectName: string;
     projectId: string;
     questions: QuestionStructure[];
-    response: SurveyResponse
+    response: SurveyResponse;
+    finalSectionEnabled: boolean;
 }
 
 export type Answer = {
@@ -64,14 +65,14 @@ export default function QuestionnaireInner(props: Props) {
 
     const updateCounts = function(answer: Answer) {
         setCounts(answer);
-        setFormValid(validateQuestionnaire(counts, answers, props.questions));
+        setFormValid(validateQuestionnaire(counts, answers, props.questions, props.finalSectionEnabled));
     }
 
     const updateAnswer = function(id: number, answer: Answer) {
         const temp = answers;
         temp[id] = answer;
         setAnswers(temp);
-        setFormValid(validateQuestionnaire(counts, answers, props.questions));
+        setFormValid(validateQuestionnaire(counts, answers, props.questions, props.finalSectionEnabled));
     }
 
     const submitForm = async function() {
@@ -111,13 +112,15 @@ export default function QuestionnaireInner(props: Props) {
 
                     <div className={`flex flex-col space-y-5`}>
                         <div className={`flex flex-col space-y-16 max-w-2xl`}>
-                            <CountQuestion answer={counts} setAnswer={updateCounts}>How many beneficiaries filled the
-                                initial and final survey?</CountQuestion>
+                            <CountQuestion answer={counts} setAnswer={updateCounts} finalSectionEnabled={props.finalSectionEnabled}>
+                                How many beneficiaries filled the initial and final survey?
+                            </CountQuestion>
 
                             {Object.keys(answers).length > 0 && props.questions.map((question, index) => (
                                 <RatingQuestion key={index} id={question.id} initial={question.initial}
                                                 final={question.final}
-                                                answer={answers[question.id]} setAnswer={updateAnswer}>
+                                                answer={answers[question.id]} setAnswer={updateAnswer}
+                                                finalSectionEnabled={props.finalSectionEnabled}>
                                     {question.text}
                                 </RatingQuestion>
                             ))}

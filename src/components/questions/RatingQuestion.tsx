@@ -11,6 +11,7 @@ type Props = {
     postfix?: string
     answer: Answer;
     setAnswer: (id: number, answer: Answer) => void;
+    finalSectionEnabled: boolean;
 }
 
 export default function RatingQuestion(props: Props) {
@@ -34,7 +35,7 @@ export default function RatingQuestion(props: Props) {
         <div className={'flex flex-row space-x-5'}>
             <RatingInput label={`Initial ${postfix}`} disabled={!props.initial}
                          value={props.answer.initial} setValue={updateInitial}/>
-            <RatingInput label={`Final ${postfix}`} disabled={!props.final}
+            <RatingInput label={`Final ${postfix}`} disabled={!props.final || !props.finalSectionEnabled}
                          value={props.answer.final} setValue={updateFinal}/>
         </div>
     );

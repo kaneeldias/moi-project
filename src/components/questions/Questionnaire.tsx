@@ -5,6 +5,7 @@ import {waitRandomTime} from "@/utils/test-utils";
 type Props = {
     projectName: string;
     projectId: string;
+    finalSectionEnabled: boolean;
 }
 
 export default async function Questionnaire(props: Props) {
@@ -13,6 +14,6 @@ export default async function Questionnaire(props: Props) {
     const surveyResponse = await getSurveyResponse(parseInt(props.projectId));
 
     return (
-        <QuestionnaireInner projectName={props.projectName} projectId={props.projectId} questions={questions} response={surveyResponse}/>
+        <QuestionnaireInner projectName={props.projectName} projectId={props.projectId} questions={questions} response={surveyResponse} finalSectionEnabled={props.finalSectionEnabled}/>
     );
 }
