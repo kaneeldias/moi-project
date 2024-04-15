@@ -36,9 +36,10 @@ async function getApplicationOffice(applicationId: number): Promise<number> {
         }
     });
 
-    if (!application) throw new Error("Unable to find application.");
-    const officeId = application.slot.opportunity.officeId;
-    if (officeId != -1) return officeId;
+    if (application) {
+        const officeId = application.slot.opportunity.officeId;
+        if (officeId != -1) return officeId;
+    }
 
     const query = gql`
         {
