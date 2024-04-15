@@ -21,7 +21,7 @@ export async function getSurveyResponse(applicationId: number): Promise<SurveyRe
 
 export async function getQuestions(project: string):  Promise<QuestionStructure[]> {
     project = project.replace(/\s+/g, '-').toLowerCase();
-    const questions = await fs.readFile(`${process.cwd()}/src/data/questions/${project}.json`, 'utf-8');
+    const questions = await fs.readFile(`${process.cwd()}/public/data/questions/${project}.json`, 'utf-8');
     return await JSON.parse(questions);
 }
 
