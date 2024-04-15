@@ -2,6 +2,10 @@ import {cookies} from "next/headers";
 import {gql} from "@apollo/client";
 import {runQuery, runQueryWithAccessToken} from "@/utils/graphql-utils";
 
+const WHITELISTED_ENTITIES = [
+    1623 // Sri Lanka
+]
+
 export function isPersonIdPresent(): boolean {
     const personId = cookies().get("person_id");
     return !!(personId && personId.value && personId.value !== "" && personId.value !== null);
@@ -124,35 +128,68 @@ export async function getAccessibleEntitiesWithNames(): Promise<{id: number, nam
 
     const query = gql`
         {
-            currentPerson {
-                current_offices {
+    currentPerson {
+        current_offices {
+            id
+            name
+            tag
+            parent {
+                id
+                tag
+            }
+            suboffices {
+                id
+                name
+                tag
+                parent {
+                    id
+                    tag
+                }
+                suboffices {
                     id
                     name
+                    tag
+                    parent {
+                        id
+                        tag
+                    }
                     suboffices {
                         id
                         name
-                        suboffices {
+                        tag
+                        parent {
                             id
-                            name
-                            suboffices {
-                                id
-                                name
-                            }
+                            tag
                         }
                     }
                 }
             }
         }
+    }
+}
     `
 
     const queryResponse = await runQuery(query);
+    console.log(queryResponse.currentPerson.current_offices);
+
     for (const office of queryResponse.currentPerson.current_offices) {
+        if (office.tag == "MC" && !WHITELISTED_ENTITIES.includes(parseInt(office.id))) continue;
+        if (office.parent && office.parent.tag == "MC" && !WHITELISTED_ENTITIES.includes(parseInt(office.parent.id))) continue;
         officeIds.push({id: parseInt(office.id), name: office.name});
+
         for (const suboffice of office.suboffices) {
+            if (suboffice.tag == "MC" && !WHITELISTED_ENTITIES.includes(parseInt(suboffice.id))) continue;
+            if (suboffice.parent && suboffice.parent.tag == "MC" && !WHITELISTED_ENTITIES.includes(parseInt(suboffice.parent.id))) continue;
             officeIds.push({id: parseInt(suboffice.id), name: suboffice.name});
+
             for (const subsuboffice of suboffice.suboffices) {
+                if (subsuboffice.tag == "MC" && !WHITELISTED_ENTITIES.includes(parseInt(subsuboffice.id))) continue;
+                if (subsuboffice.parent && subsuboffice.parent.tag == "MC" && !WHITELISTED_ENTITIES.includes(parseInt(subsuboffice.parent.id))) continue;
                 officeIds.push({id: parseInt(subsuboffice.id), name: subsuboffice.name});
+
                 for (const subsubsuboffice of subsuboffice.suboffices) {
+                    if (subsubsuboffice.tag == "MC" && !WHITELISTED_ENTITIES.includes(parseInt(subsubsuboffice.id))) continue;
+                    if (subsubsuboffice.parent && subsubsuboffice.parent.tag == "MC" && !WHITELISTED_ENTITIES.includes(parseInt(subsubsuboffice.parent.id))) continue;
                     officeIds.push({id: parseInt(subsubsuboffice.id), name: subsubsuboffice.name});
                 }
             }

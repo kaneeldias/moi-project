@@ -3,6 +3,7 @@ import Link from "next/link";
 import {getOpportunity} from "@/utils/opportunity-utils";
 import {waitRandomTime} from "@/utils/test-utils";
 import HostEntityChip from "@/components/chips/HostEntityChip";
+import {getProjectLogo} from "@/utils/img-utils";
 
 type Props = {
     opportunityId: number;
@@ -11,6 +12,7 @@ type Props = {
 export default async function OpportunityBox(props: Props) {
     await waitRandomTime();
     const opportunity = await getOpportunity(props.opportunityId);
+    const projectLogo = getProjectLogo(opportunity.name, opportunity.sdg);
 
     return (
         <div className={`flex flex-row h-fit w-full md:w-fit mt-5`}>
@@ -18,7 +20,7 @@ export default async function OpportunityBox(props: Props) {
             <div
                 className={"flex flex-row bg-white rounded-md shadow-md text-gray-800 h-24 md:min-w-[400px] w-full md:w-fit"}>
                 <div className={`h-96`}>
-                    <Image className={`rounded-l-md`} src={`/sdg_logos/${opportunity.sdg}.png`}
+                    <Image className={`rounded-l-md`} src={projectLogo}
                            width={96}
                            height={96}
                            priority={true}

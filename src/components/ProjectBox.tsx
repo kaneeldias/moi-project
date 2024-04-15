@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from "next/link";
 import {waitRandomTime} from "@/utils/test-utils";
 import {getProject} from "@/utils/project-utils";
+import {getProjectLogo} from "@/utils/img-utils";
 
 type Props = {
     projectId: number;
@@ -10,6 +11,8 @@ type Props = {
 export default async function ProjectBox(props: Props) {
     await waitRandomTime();
     const project = await getProject(props.projectId);
+    const projectLogo = getProjectLogo(project.name, project.sdg);
+
 
     return (
         <Link className={`flex flex-row h-fit w-full md:w-fit mt-5`}
@@ -17,7 +20,7 @@ export default async function ProjectBox(props: Props) {
             <div
                 className={"flex flex-row bg-white rounded-md shadow-md text-gray-800 h-24 md:min-w-[400px] w-full md:w-fit"}>
                 <div className={`h-96`}>
-                    <Image className={`rounded-l-md`} src={`/sdg_logos/${project.sdg}.png`}
+                    <Image className={`rounded-l-md`} src={projectLogo}
                            width={96}
                            height={96}
                            priority={true}
