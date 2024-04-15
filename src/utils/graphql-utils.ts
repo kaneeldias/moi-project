@@ -33,8 +33,7 @@ export async function runQuery(query: DocumentNode | TypedDocumentNode<any, Oper
         variables: variables,
     });
 
-    if (!cachedData) console.info("Cache missed");
-    else return cachedData;
+    if (cachedData) return cachedData;
 
     const {data, errors} = await client.query({
         query, variables
