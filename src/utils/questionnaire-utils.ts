@@ -1,8 +1,13 @@
 import {verifyCanViewQuestionnaire} from "@/utils/application-utils";
 import {QuestionStructure, SurveyResponse} from "@/types/question-types";
 import {prisma} from "@/utils/prisma-utils";
-import {promises as fs} from "fs";
 import {QuestionType} from "@prisma/client";
+import globalClassRoom from "@/data/questions/global-classroom.json";
+import raiseYourVoice from "@/data/questions/raise-your-voice.json";
+import skillUp from "@/data/questions/skill-up.json";
+import onTheMap from "@/data/questions/on-the-map.json";
+import equify from "@/data/questions/equify.json";
+import greenLeaders from "@/data/questions/green-leaders.json";
 
 export async function getSurveyResponse(applicationId: number): Promise<SurveyResponse> {
     await verifyCanViewQuestionnaire(applicationId);
@@ -20,9 +25,23 @@ export async function getSurveyResponse(applicationId: number): Promise<SurveyRe
 }
 
 export async function getQuestions(project: string):  Promise<QuestionStructure[]> {
-    project = project.replace(/\s+/g, '-').toLowerCase();
-    const questions = await fs.readFile(`${process.cwd()}/public/data/questions/${project}.json`, 'utf-8');
-    return await JSON.parse(questions);
+    //select case
+    switch (project) {
+        case "Global Classroom":
+            return globalClassRoom
+        case "Raise Your Voice":
+            return raiseYourVoice;
+        case "Skill Up":
+            return skillUp;
+        case "On the Map":
+            return onTheMap;
+        case "Equify":
+            return equify;
+        case "Green Leaders":
+            return greenLeaders;
+        default:
+            throw new Error("Project not found: " + project);
+    }
 }
 
 export async function getFullSurveyResponses(opportunityId: number, slots?: number[]): Promise<{
