@@ -25,13 +25,12 @@ export async function getSurveyResponse(applicationId: number): Promise<SurveyRe
 }
 
 export async function getQuestions(project: string):  Promise<QuestionStructure[]> {
-    //select case
     switch (project) {
         case "Global Classroom":
             return globalClassRoom
         case "Raise Your Voice":
             return raiseYourVoice;
-        case "Skill Up":
+        case "Skill Up!":
             return skillUp;
         case "On the Map":
             return onTheMap;
