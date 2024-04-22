@@ -12,31 +12,33 @@ export async function middleware(request: NextRequest) {
         url.searchParams.set("response_type", "code");
         url.searchParams.set("client_id", process.env.AUTH_CLIENT_ID!);
         url.searchParams.set("redirect_uri", process.env.AUTH_REDIRECT_URI!);
+        url.searchParams.set("state", "");
         const response = NextResponse.redirect(url.toString());
 
         response.cookies.set("redirect_uri", lastUrl, {
             httpOnly: true,
             secure: true,
-            sameSite: "strict"
         });
-
-        response.cookies.delete("access_token");
-        response.cookies.delete("refresh_token");
-
+        
         return response;
     }
 
     const response = NextResponse.next();
-    if (!isAccessTokenPresent()) {
+    if (!isAccessTokenPresent() && !request.url.includes("/auth")) {
+        console.log("No access token found: " + request.url);
+
+
         let refreshTokenResponse: GetTokenResponse;
 
         try {
             refreshTokenResponse = await refreshAccessToken();
         } catch (e) {
+            console.log("what the fuck");
             const url = new URL(`${process.env.GIS_AUTH_ENDPOINT}/oauth/authorize`);
             url.searchParams.set("response_type", "code");
             url.searchParams.set("client_id", process.env.AUTH_CLIENT_ID!);
             url.searchParams.set("redirect_uri", process.env.AUTH_REDIRECT_URI!);
+            url.searchParams.set("state", "");
             const response = NextResponse.redirect(url.toString());
 
             response.cookies.set("redirect_uri", lastUrl, {
