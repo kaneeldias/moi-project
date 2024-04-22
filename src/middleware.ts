@@ -5,7 +5,7 @@ import {GetTokenResponse} from "@/app/auth/auth-types";
 import {getPersonId, isPersonIdPresent} from "@/utils/person-utils";
 
 export async function middleware(request: NextRequest) {
-    const lastUrl = request.url;
+    const lastUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${request.nextUrl.pathname}`;
 
     if (!isLoggedIn()) {
         const url = new URL(`${process.env.GIS_AUTH_ENDPOINT}/oauth/authorize`);

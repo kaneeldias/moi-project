@@ -20,7 +20,6 @@ export async function GET(request: NextRequest) {
     response.cookies.set("refresh_token", authResponse.refresh_token, {
         httpOnly: true,
         secure: true,
-        sameSite: "strict"
     });
 
     return response;
