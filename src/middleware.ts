@@ -24,16 +24,13 @@ export async function middleware(request: NextRequest) {
     }
 
     const response = NextResponse.next();
-    if (!isAccessTokenPresent() && !request.url.includes("/auth")) {
+    if (!isAccessTokenPresent()) {
         console.log("No access token found: " + request.url);
-
-
         let refreshTokenResponse: GetTokenResponse;
 
         try {
             refreshTokenResponse = await refreshAccessToken();
         } catch (e) {
-            console.log("what the fuck");
             const url = new URL(`${process.env.GIS_AUTH_ENDPOINT}/oauth/authorize`);
             url.searchParams.set("response_type", "code");
             url.searchParams.set("client_id", process.env.AUTH_CLIENT_ID!);
