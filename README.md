@@ -30,16 +30,18 @@ To configure your local environment for this project, follow these steps:
 2. **Assign Values:**
    Inside the `.env.local` file, assign the following values to their respective variables:
 
-- **NEXT_PUBLIC_BASE_URL**: `https://localhost:3000`
-- **GIS_AUTH_ENDPOINT**: `https://auth.aiesec.org`
-- **AUTH_CLIENT_ID**: `<Your Application UID from AIESEC Developer Page>`
-- **AUTH_CLIENT_SECRET**: `<Your Secret ID from AIESEC Developer Page>`
-- **AUTH_REDIRECT_URI**: `https://localhost:3000/auth`
-- **NEXT_PUBLIC_EXPA_URL**: `https://expa.aiesec.org`
+- **NEXT_PUBLIC_BASE_URL**=`https://localhost:3000`
+- **GIS_AUTH_ENDPOINT**=`https://auth.aiesec.org`
+- **GIS_API_ENDPOINT**=`https://gis-api.aiesec.org/graphql`
+- **AUTH_CLIENT_ID**=`<Your Application UID from AIESEC Developer Page>`
+- **AUTH_CLIENT_SECRET**=`<Your Secret ID from AIESEC Developer Page>`
+- **AUTH_REDIRECT_URI**=`https://localhost:3000/auth`
+- **NEXT_PUBLIC_EXPA_URL**=`https://expa.aiesec.org`
 
 
 - `NEXT_PUBLIC_BASE_URL`: This is the base URL for your local development server.
 - `GIS_AUTH_ENDPOINT`: Endpoint for AIESEC's authentication service.
+- `GIS_API_ENDPOINT`: Endpoint for AIESEC's Graphql API
 - `AUTH_CLIENT_ID`: Obtain this UID from your AIESEC Developer Page.
 - `AUTH_CLIENT_SECRET`: Obtain this Secret ID from your AIESEC Developer Page.
 - `AUTH_REDIRECT_URI`: Redirect URI after authentication. Ensure it includes `auth` along with your local development server URL (`https://localhost:3000`).
