@@ -21,7 +21,9 @@ export default async function ProjectQuestionnaire(props: Props) {
 
     const today = new Date();
     const slotEndDate = new Date(project.endDate);
-    const finalSectionEnabled = ((slotEndDate.getTime() - today.getTime()) < 7 * 24 * 60 * 60 * 1000)
+    // TODO: fix
+    // const finalSectionEnabled = ((slotEndDate.getTime() - today.getTime()) < 7 * 24 * 60 * 60 * 1000)
+    const finalSectionEnabled = true;
 
     return (
         <div className={`flex flex-col md:flex-row md:space-x-5 pt-5 w-full space-y-10 md:space-y-0 max-w-2xl md:max-w-fit`}>

@@ -31,15 +31,16 @@ export default async function ProjectSelector() {
 }
 
 async function getProjects(): Promise<Project[]> {
+    // TODO: fix
+    // filters: {
+    //     programmes: [7],
+    //     for: "people",
+    //         statuses: ["realized", "finished", "completed"]
+    // }
     const query = gql`
         query PersonApplicationsQuery {
           personApplications(
             id: "${await getPersonId()}",
-            filters: {
-                programmes: [7],
-                for: "people",
-                statuses: ["realized", "finished", "completed"]
-            }
             pagination: {
                 per_page: 100,
                 page: 1
