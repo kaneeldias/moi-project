@@ -110,6 +110,10 @@ export async function verifyCanSubmitQuestionnaire(applicationId: number) {
 }
 
 export async function verifyCanViewQuestionnaire(applicationId: number) {
+    const personId = await forceGetPersonId();
+    const applicationOwner = await getApplicationOwnerId(applicationId);
+    if (personId === applicationOwner) return;
+    
     const accessibleEntities = await getAccessibleEntities();
     const applicationOffice = await getApplicationOffice(applicationId);
 
