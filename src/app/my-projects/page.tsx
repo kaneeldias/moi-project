@@ -32,37 +32,37 @@ export default async function ProjectSelector() {
 
 async function getProjects(): Promise<Project[]> {
     const query = gql`
-        {
-            personApplications(
-                id: "${await getPersonId()}"
-                filters: {
-                    programmes: [7],
-                    for: "people",
-                    statuses: ["realized", "finished", "completed"]
-                }
-                pagination: {
-                    per_page: 100,
-                    page: 1
-                }
-            ) {
-                data {
-                    id
-                    opportunity {
-                        title
-                        location
-                        sdg_info {
-                            sdg_target {
-                                goal_index
-                            }
+        query PersonApplicationsQuery {
+          personApplications(
+            id: "${await getPersonId()}",
+            filters: {
+                programmes: [7],
+                for: "people",
+                statuses: ["realized", "finished", "completed"]
+            }
+            pagination: {
+                per_page: 100,
+                page: 1
+            }
+        ) {
+            data {
+                id
+                opportunity {
+                    title
+                    location
+                    sdg_info {
+                        sdg_target {
+                            goal_index
                         }
                     }
-                    slot {
-                        start_date
-                        end_date
-                    }
+                }
+                slot {
+                    start_date
+                    end_date
                 }
             }
         }
+    }
     `
 
     const queryResponse = await runQuery(query);

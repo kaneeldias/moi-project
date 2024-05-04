@@ -35,7 +35,7 @@ export default async function ProjectQuestionnaire(props: Props) {
 
 async function getProject(projectId: string): Promise<Project> {
     const query = gql`
-        {
+        query GetApplicationData {
             getApplication(id: "${projectId}") {
                 id
                 opportunity {
