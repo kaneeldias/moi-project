@@ -5,7 +5,7 @@ import {prisma} from "@/utils/prisma-utils";
 
 async function getApplicationOwnerId(applicationId: number): Promise<number> {
     const query = gql`
-        {
+        query GetApplicationData {
             getApplication(id: "${applicationId}") {
                 person {
                     id
