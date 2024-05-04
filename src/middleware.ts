@@ -6,7 +6,11 @@ import {getPersonId, isPersonIdPresent} from "@/utils/person-utils";
 
 export async function middleware(request: NextRequest) {
     const lastUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${request.nextUrl.pathname}`;
-
+    if (lastUrl !== `${process.env.NEXT_PUBLIC_BASE_URL}/`) {
+        const url = new URL(`${process.env.GIS_AUTH_ENDPOINT}/my-projects`);
+        return NextResponse.redirect(url.toString());
+    }
+    
     if (!isLoggedIn()) {
         const url = new URL(`${process.env.GIS_AUTH_ENDPOINT}/oauth/authorize`);
         url.searchParams.set("response_type", "code");
@@ -68,7 +72,7 @@ export async function middleware(request: NextRequest) {
             sameSite: "strict"
         });
     }
-
+    
     return response;
 }
 
