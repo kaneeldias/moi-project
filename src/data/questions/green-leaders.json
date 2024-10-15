@@ -56,7 +56,7 @@
     {
         "id": 10,
         "text": "How much interest do you take in your and your communities education?",
-        "initial": false,
+        "initial": true,
         "final": true
     },
     {
