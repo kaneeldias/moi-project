@@ -3,7 +3,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  binaryTargets = ["native", "rhel-openssl-1.0.x"]
 }
 
 datasource db {
@@ -12,24 +11,25 @@ datasource db {
 }
 
 model SurveyResponse {
-  applicationId Int       @id
-  slot          Slot      @relation(fields: [slotId], references: [id])
+  applicationId Int      @id
+  slot          Slot     @relation(fields: [slotId], references: [id])
   slotId        Int
   initialCount  Int
   finalCount    Int
   answers       Answer[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Answer {
-  surveyResponse    SurveyResponse  @relation(fields: [surveyResponseId], references: [applicationId])
-  surveyResponseId  Int
-  questionId        Int
-  type              QuestionType
-  answer            Float
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
+  surveyResponse   SurveyResponse @relation(fields: [surveyResponseId], references: [applicationId])
+  surveyResponseId Int
+  questionId       Int
+  type             QuestionType
+  answer           Float
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
   @@id([surveyResponseId, questionId, type])
 }
 
@@ -39,24 +39,24 @@ enum QuestionType {
 }
 
 model Opportunity {
-  id            Int             @id
-  name          String          @default("###")
-  project       Project         @relation(fields: [projectId], references: [id])
-  projectId     Int
-  slots         Slot[]
-  officeId      Int             @default(-1)
+  id        Int     @id
+  name      String  @default("###")
+  project   Project @relation(fields: [projectId], references: [id])
+  projectId Int
+  slots     Slot[]
+  officeId  Int     @default(-1)
 }
 
 model Slot {
-  id            Int             @id
-  name          String
-  opportunity   Opportunity     @relation(fields: [opportunityId], references: [id])
-  opportunityId Int
+  id              Int              @id
+  name            String
+  opportunity     Opportunity      @relation(fields: [opportunityId], references: [id])
+  opportunityId   Int
   surveyResponses SurveyResponse[]
 }
 
 model Project {
-  id            Int             @id
+  id            Int           @id
   name          String
   sdg           Int
   opportunities Opportunity[]
