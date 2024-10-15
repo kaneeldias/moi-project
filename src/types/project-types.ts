@@ -11,5 +11,5 @@ export type Opportunity = {
     id: number,
     name: string,
     location: string,
-    sdg: number,
+    sdg: number
 }
