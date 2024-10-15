@@ -3,6 +3,19 @@ import {gql} from "@apollo/client";
 import {runQuery, runQueryWithAccessToken} from "@/utils/graphql-utils";
 
 const WHITELISTED_ENTITIES = [
+    1535, // Argentina
+    1657, // Ecuador
+    1555, // Greece
+    1556, // Guatemala
+    1539, // Indonesia
+    1562, // Korea
+    1611, // Malaysia
+    1589, // Mexico
+    1578, // Nigeria
+    1547, // Serbia
+    1536, // Slovakia
+    1561, // Taiwan
+    1622, // Turkey
     1623, // Sri Lanka
     459, // Benin
     1593, // Bolivia,
