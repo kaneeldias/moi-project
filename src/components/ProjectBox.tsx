@@ -3,6 +3,7 @@ import Link from "next/link";
 import {waitRandomTime} from "@/utils/test-utils";
 import {getProject} from "@/utils/project-utils";
 import {getProjectLogo} from "@/utils/img-utils";
+import {truncateString} from "@/utils/string-utils";
 
 type Props = {
     projectId: number;
@@ -29,7 +30,7 @@ export default async function ProjectBox(props: Props) {
                 </div>
                 <div className={`flex flex-col pl-5 space-y-5 justify-center`}>
                     <div className={`flex flex-col space-y-2`}>
-                        <div className={`text-2xl font-bold text-gray-700`}>{project.name}</div>
+                        <div className={`text-2xl font-bold text-gray-700`}>{truncateString(project.name, 20)}</div>
                     </div>
                 </div>
             </div>
