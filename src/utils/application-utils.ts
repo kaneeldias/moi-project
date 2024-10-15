@@ -4,6 +4,20 @@ import {forceGetPersonId, getAccessibleEntities, isAiEbMember} from "@/utils/per
 import {prisma} from "@/utils/prisma-utils";
 
 async function getApplicationOwnerId(applicationId: number): Promise<number> {
+    const application = await prisma.surveyResponse.findUnique({
+        where: {
+            applicationId: applicationId
+        },
+        select: {
+            ownerId: true
+        }
+    });
+
+    if (application) {
+        const ownerId = application.ownerId;
+        if (ownerId != -1) return ownerId;
+    }
+
     const query = gql`
         query GetApplicationData {
             getApplication(id: "${applicationId}") {
@@ -15,7 +29,22 @@ async function getApplicationOwnerId(applicationId: number): Promise<number> {
     `
 
     const queryResponse = await runQuery(query);
-    return queryResponse.getApplication.person.id;
+
+    const ownerId = queryResponse.getApplication.person.id;
+    try {
+        await prisma.surveyResponse.update({
+            where: {
+                applicationId: applicationId
+            },
+            data: {
+                ownerId: parseInt(ownerId)
+            }
+        });
+    } catch (e) {
+        console.error("Unable to update application owner ID:", e);
+    }
+
+    return ownerId;
 }
 
 async function getApplicationOffice(applicationId: number): Promise<number> {

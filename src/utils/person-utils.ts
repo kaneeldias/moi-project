@@ -72,22 +72,23 @@ export async function isAiEbMember(): Promise<boolean> {
 }
 
 export async function forceGetPersonId(accessToken?: string): Promise<number> {
-    const query = gql`
-        {
-            currentPerson {
-                id
-            }
-        }
-    `
-
-    let queryResponse;
-    if (accessToken) {
-        queryResponse = await runQueryWithAccessToken(accessToken!, query);
-    } else {
-        queryResponse = await runQuery(query);
-    }
-
-    return queryResponse.currentPerson.id;
+    return await getPersonId(accessToken);
+    // const query = gql`
+    //     {
+    //         currentPerson {
+    //             id
+    //         }
+    //     }
+    // `
+    //
+    // let queryResponse;
+    // if (accessToken) {
+    //     queryResponse = await runQueryWithAccessToken(accessToken!, query);
+    // } else {
+    //     queryResponse = await runQuery(query);
+    // }
+    //
+    // return queryResponse.currentPerson.id;
 }
 
 export async function isAiesecer(): Promise<boolean> {

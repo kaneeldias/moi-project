@@ -25,6 +25,7 @@ export async function POST(request: NextRequest, { params }: {params: {applicati
         },
         create: {
             applicationId: applicationId,
+            ownerId: -1,
             initialCount: requestBody.counts.initial,
             finalCount: requestBody.counts.final || 0,
             answers: {
