@@ -32,7 +32,7 @@ export async function getQuestions(project: string):  Promise<QuestionStructure[
             return raiseYourVoice;
         case "Skill Up!":
             return skillUp;
-        case "On the Map":
+        case "On The Map":
             return onTheMap;
         case "Equify":
             return equify;
