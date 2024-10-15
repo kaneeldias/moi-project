@@ -2,6 +2,7 @@ import {formatDateToMonthYear} from "@/utils/datetime-utils";
 import {Project} from "@/types/project-types";
 import Image from 'next/image'
 import Link from "next/link";
+import {getProjectLogo} from "@/utils/img-utils";
 
 type Props = {
     project: Project;
@@ -12,7 +13,7 @@ export default function SlotBox(props: Props) {
         <Link className={`flex flex-row h-fit w-full md:w-fit`} href={`/questionnaire/${props.project.id}`}>
             <div className={"flex flex-row bg-white rounded-md shadow-md text-gray-800 h-24 md:min-w-[400px] w-full md:w-fit"}>
                 <div className={`h-96`}>
-                    <Image className={`rounded-l-md`} src={`/sdg_logos/${props.project.sdg}.png`}
+                    <Image className={`rounded-l-md`} src={getProjectLogo(props.project.name, props.project.sdg)}
                            width={96}
                            height={96}
                            priority={true}
